@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">Project</string>
+    <string name="input_email">Input Email</string>
+    <string name="input_password">Input Password</string>
+    <string name="login">Login</string>
+    <string name="do_not_have_an_account">Don\'t have an account?\u0020</string>
+    <string name="sign_up">Sign Up</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="address">Address</string>
+    <string name="input_name">Input Name</string>
+    <string name="input_phone_number">Input Phone Number</string>
+    <string name="re_input_password">Re-Input Password</string>
+    <string name="input_street_name">Input Street Name</string>
+    <string name="i_accept_the_terms_of_service_and_privacy_policy">I accept the Terms of Service and Privacy Policy</string>
+    <string name="text_sign_up">Sign Up!</string>
+</resources>

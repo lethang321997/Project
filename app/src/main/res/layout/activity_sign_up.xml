@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background"
+    tools:context=".activity.SignUpActivity">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="20dp">
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/sign_up"
+            android:textColor="@color/colorButton"
+            android:textSize="35sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/guideline2" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.03" />
+
+        <EditText
+            android:id="@+id/registerEmail"
+            style="@style/style_edit_text"
+            android:layout_marginTop="40dp"
+            android:drawableStart="@drawable/ic_email"
+            android:hint="@string/input_email"
+            android:inputType="textEmailAddress"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView2" />
+
+        <EditText
+            android:id="@+id/registerName"
+            style="@style/style_edit_text"
+            android:layout_marginTop="25dp"
+            android:drawableStart="@drawable/ic_name"
+            android:hint="@string/input_name"
+            android:inputType="textPersonName"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/registerEmail" />
+
+
+        <EditText
+            android:id="@+id/registerPhone"
+            style="@style/style_edit_text"
+            android:layout_marginTop="25dp"
+            android:drawableStart="@drawable/ic_phone"
+            android:hint="@string/input_phone_number"
+            android:inputType="phone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/registerName" />
+
+        <TextView
+            android:id="@+id/textView4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="25dp"
+            android:text="@string/address"
+            android:textSize="18sp"
+            app:layout_constraintStart_toStartOf="@+id/registerRePass"
+            app:layout_constraintTop_toBottomOf="@+id/registerPhone" />
+
+        <Spinner
+            android:id="@+id/spinnerProvince"
+            android:layout_width="285dp"
+            android:layout_height="45dp"
+            android:layout_marginTop="10dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView4" />
+
+        <Spinner
+            android:id="@+id/spinnerDistrict"
+            android:layout_width="285dp"
+            android:layout_height="45dp"
+            android:layout_marginTop="10dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/spinnerProvince" />
+
+        <Spinner
+            android:id="@+id/spinnerCommune"
+            android:layout_width="285dp"
+            android:layout_height="45dp"
+            android:layout_marginTop="10dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/spinnerDistrict" />
+
+        <EditText
+            android:id="@+id/registerAddress"
+            style="@style/style_edit_text"
+            android:layout_marginTop="10dp"
+            android:drawableStart="@drawable/ic_location"
+            android:hint="@string/input_street_name"
+            android:inputType="text"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/spinnerCommune" />
+
+        <EditText
+            android:id="@+id/registerPass"
+            style="@style/style_edit_text"
+            android:layout_marginTop="25dp"
+            android:drawableStart="@drawable/ic_lock_black"
+            android:hint="@string/input_password"
+            android:inputType="textPassword"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/registerAddress" />
+
+        <EditText
+            android:id="@+id/registerRePass"
+            style="@style/style_edit_text"
+            android:layout_marginTop="25dp"
+            android:drawableStart="@drawable/ic_lock_outline"
+            android:hint="@string/re_input_password"
+            android:inputType="textPassword"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/registerPass" />
+
+
+        <CheckBox
+            android:id="@+id/checkBoxTerm"
+            android:layout_width="285dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="25dp"
+            android:gravity="top"
+            android:text="@string/i_accept_the_terms_of_service_and_privacy_policy"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="@+id/registerRePass"
+            app:layout_constraintTop_toBottomOf="@+id/registerRePass" />
+
+        <Button
+            android:id="@+id/btnSignUpAccount"
+            android:layout_width="110dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="25dp"
+            android:background="@drawable/button"
+            android:enabled="false"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:text="@string/sign_up"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/checkBoxTerm" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>
