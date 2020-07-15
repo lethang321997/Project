@@ -170,6 +170,7 @@
             app:layout_constraintTop_toBottomOf="@+id/recyclerViewImage" />
 
         <EditText
+            android:textAlignment="textEnd"
             android:id="@+id/editProductPrice"
             android:layout_width="220dp"
             android:layout_height="35dp"
@@ -181,7 +182,7 @@
             app:layout_constraintTop_toTopOf="@+id/textView12" />
 
         <Button
-            android:id="@+id/addProduct"
+            android:id="@+id/btnAddProduct"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="35dp"

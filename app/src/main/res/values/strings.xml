@@ -30,6 +30,11 @@
     <string name="take_photo">Take Photo</string>
     <string name="select_from_library">Select from library</string>
     <string name="maximum_6_images">(Maximum 6 images)</string>
+    <string name="input_your_date_of_birth">Input Your Date Of Birth</string>
+    <string name="ok">OK</string>
+    <string name="gender">Gender</string>
+    <string name="male">Male</string>
+    <string name="female">Female</string>
     <string-array name="product_type">
         <item>Accessories</item>
         <item>Bag</item>

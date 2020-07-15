@@ -29,6 +29,10 @@ import android.widget.Toast;
 import com.example.project.R;
 import com.example.project.adapter.ListImageAdapter;
 import com.example.project.common.Constants;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
@@ -42,6 +46,7 @@ public class AddProductFragment extends Fragment {
     Spinner spinnerColor;
     Spinner spinnerType;
     Button btnSelectImage;
+    Button btnAddProduct;
     TextView takePhoto;
     TextView selectFromLibrary;
     RecyclerView recyclerViewImage;
@@ -74,6 +79,7 @@ public class AddProductFragment extends Fragment {
         spinnerType = getView().findViewById(R.id.spinnerType);
         btnSelectImage = getView().findViewById(R.id.btnSelectImage);
         recyclerViewImage = getView().findViewById(R.id.recyclerViewImage);
+        btnAddProduct = getView().findViewById(R.id.btnAddProduct);
     }
 
     void initSpinner() {
@@ -132,6 +138,12 @@ public class AddProductFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 dialogSelectImage();
+            }
+        });
+        btnAddProduct.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
             }
         });
     }
@@ -208,5 +220,28 @@ public class AddProductFragment extends Fragment {
             }
         }
         adapter.notifyDataSetChanged();
+    }
+
+    void addProduct() {
+
+    }
+
+    void storeImage() {
+        StorageReference storageRef = FirebaseStorage.getInstance().getReference().child("ImageFolder");
+        for (int i = 0; i < listImage.size(); i++) {
+            Uri imageUri = listImage.get(i);
+            final StorageReference imageName = storageRef.child("image" + imageUri.getLastPathSegment());
+            imageName.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    imageName.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                        @Override
+                        public void onSuccess(Uri uri) {
+
+                        }
+                    });
+                }
+            });
+        }
     }
 }
