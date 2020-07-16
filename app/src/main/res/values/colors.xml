@@ -10,4 +10,5 @@
     <color name="tabUnselected">#707070</color>
     <color name="textSelected">#4D8BFF</color>
     <color name="textUnselected">#666666</color>
+    <color name="colorButton_clone1">#60efff</color>
 </resources>
