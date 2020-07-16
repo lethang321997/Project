@@ -17,19 +17,28 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.project.R;
+import com.example.project.activity.MainActivity;
 import com.example.project.adapter.ListImageAdapter;
 import com.example.project.common.Constants;
+import com.example.project.model.Product;
+import com.example.project.model.User;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -43,6 +52,10 @@ import java.util.Arrays;
  */
 public class AddProductFragment extends Fragment {
 
+    EditText editName;
+    EditText editBrand;
+    EditText editQuantity;
+    EditText editPrice;
     Spinner spinnerColor;
     Spinner spinnerType;
     Button btnSelectImage;
@@ -50,8 +63,11 @@ public class AddProductFragment extends Fragment {
     TextView takePhoto;
     TextView selectFromLibrary;
     RecyclerView recyclerViewImage;
-    ArrayList<Uri> listImage = new ArrayList<>(6);
+    ArrayList<Uri> listImage = new ArrayList<>();
+    ArrayList<String> listImageUrl = new ArrayList<>();
     ListImageAdapter adapter;
+    String idUser;
+    String id;
 
     public AddProductFragment() {
         // Required empty public constructor
@@ -69,6 +85,7 @@ public class AddProductFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         initWidget();
+        initData();
         initSpinner();
         initAction();
         initAdapter();
@@ -80,6 +97,15 @@ public class AddProductFragment extends Fragment {
         btnSelectImage = getView().findViewById(R.id.btnSelectImage);
         recyclerViewImage = getView().findViewById(R.id.recyclerViewImage);
         btnAddProduct = getView().findViewById(R.id.btnAddProduct);
+        editName = getView().findViewById(R.id.editProductName);
+        editBrand = getView().findViewById(R.id.editBrand);
+        editQuantity = getView().findViewById(R.id.editQuantity);
+        editPrice = getView().findViewById(R.id.editProductPrice);
+    }
+
+    void initData() {
+        MainActivity activity = (MainActivity) getActivity();
+        idUser = activity.getIdUser();
     }
 
     void initSpinner() {
@@ -143,7 +169,7 @@ public class AddProductFragment extends Fragment {
         btnAddProduct.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                addProduct();
             }
         });
     }
@@ -223,13 +249,25 @@ public class AddProductFragment extends Fragment {
     }
 
     void addProduct() {
+        storeImage();
+        String name = editName.getText().toString();
+        String brand = editBrand.getText().toString();
+        int quantity = Integer.parseInt(editQuantity.getText().toString());
+        String color = spinnerColor.getSelectedItem().toString();
+        String type = spinnerType.getSelectedItem().toString();
+        int price = Integer.parseInt(editPrice.getText().toString());
+        DatabaseReference data = FirebaseDatabase.getInstance().getReference("Product");
+        id = data.push().getKey();
+        Product product = new Product(id, idUser, name, brand, quantity, color, type, listImageUrl, price);
+        data.child(id).setValue(product);
 
     }
 
     void storeImage() {
         StorageReference storageRef = FirebaseStorage.getInstance().getReference().child("ImageFolder");
+
         for (int i = 0; i < listImage.size(); i++) {
-            Uri imageUri = listImage.get(i);
+            final Uri imageUri = listImage.get(i);
             final StorageReference imageName = storageRef.child("image" + imageUri.getLastPathSegment());
             imageName.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
@@ -237,7 +275,10 @@ public class AddProductFragment extends Fragment {
                     imageName.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                         @Override
                         public void onSuccess(Uri uri) {
-
+                            DatabaseReference data = FirebaseDatabase.getInstance().getReference("Product");
+                            String imageUrl = String.valueOf(uri);
+                            data.child(id).child("listImage").push().child("imageUrl").setValue(imageUrl);
+                            listImageUrl.add(imageUrl);
                         }
                     });
                 }

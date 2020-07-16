@@ -170,7 +170,6 @@
             app:layout_constraintTop_toBottomOf="@+id/recyclerViewImage" />
 
         <EditText
-            android:textAlignment="textEnd"
             android:id="@+id/editProductPrice"
             android:layout_width="220dp"
             android:layout_height="35dp"

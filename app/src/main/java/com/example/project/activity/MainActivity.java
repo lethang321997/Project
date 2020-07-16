@@ -4,11 +4,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.viewpager.widget.ViewPager;
 
+import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.example.project.R;
 import com.example.project.adapter.TabLayoutAdapter;
+import com.example.project.common.Constants;
 import com.example.project.fragment.RootAddFragment;
 import com.example.project.fragment.CartFragment;
 import com.example.project.fragment.HomeFragment;
@@ -19,14 +22,19 @@ public class MainActivity extends AppCompatActivity {
 
     TabLayout tabLayout;
     ViewPager viewPager;
-
+    String idUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initWidget();
+        initData();
         initTabLayout();
+    }
+
+    void initData() {
+        idUser = getIntent().getStringExtra(Constants.ID_USER);
     }
 
     void initWidget() {
@@ -65,5 +73,9 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    public String getIdUser() {
+        return idUser;
     }
 }
