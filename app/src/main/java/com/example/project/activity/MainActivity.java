@@ -16,13 +16,14 @@ import com.example.project.fragment.RootAddFragment;
 import com.example.project.fragment.CartFragment;
 import com.example.project.fragment.HomeFragment;
 import com.example.project.fragment.ProfileFragment;
+import com.example.project.model.User;
 import com.google.android.material.tabs.TabLayout;
 
 public class MainActivity extends AppCompatActivity {
 
     TabLayout tabLayout;
     ViewPager viewPager;
-    String idUser;
+    User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     void initData() {
-        idUser = getIntent().getStringExtra(Constants.ID_USER);
+        user = (User) getIntent().getSerializableExtra(Constants.USER);
     }
 
     void initWidget() {
@@ -75,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    public String getIdUser() {
-        return idUser;
+    public User getUser() {
+        return user;
     }
 }

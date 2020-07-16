@@ -66,7 +66,7 @@ public class AddProductFragment extends Fragment {
     ArrayList<Uri> listImage = new ArrayList<>();
     ArrayList<String> listImageUrl = new ArrayList<>();
     ListImageAdapter adapter;
-    String idUser;
+    User user;
     String id;
 
     public AddProductFragment() {
@@ -105,7 +105,7 @@ public class AddProductFragment extends Fragment {
 
     void initData() {
         MainActivity activity = (MainActivity) getActivity();
-        idUser = activity.getIdUser();
+        user = activity.getUser();
     }
 
     void initSpinner() {
@@ -256,6 +256,7 @@ public class AddProductFragment extends Fragment {
         String color = spinnerColor.getSelectedItem().toString();
         String type = spinnerType.getSelectedItem().toString();
         int price = Integer.parseInt(editPrice.getText().toString());
+        String idUser = user.getId();
         DatabaseReference data = FirebaseDatabase.getInstance().getReference("Product");
         id = data.push().getKey();
         Product product = new Product(id, idUser, name, brand, quantity, color, type, listImageUrl, price);

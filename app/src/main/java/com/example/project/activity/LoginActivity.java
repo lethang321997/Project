@@ -33,7 +33,6 @@ public class LoginActivity extends AppCompatActivity {
     TextView textSignUp;
     EditText editEmail;
     EditText editPass;
-    String idUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,9 +87,8 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                 User user = snapshot.getValue(User.class);
-                idUser = user.getId();
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                intent.putExtra(Constants.ID_USER, idUser);
+                intent.putExtra(Constants.USER, user);
                 startActivity(intent);
             }
 
