@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background"
+    tools:context=".activity.buyer.ViewProfileActivity">
+
+    <ImageView
+        android:id="@+id/imgProfile"
+        android:layout_width="113dp"
+        android:layout_height="108dp"
+        android:src="@drawable/ic_profile_tab"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView5" />
+
+    <TextView
+        android:id="@+id/textView5"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:background="@color/colorButton_clone1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageButton
+        android:id="@+id/btnBack"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:background="@color/colorButton_clone1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/abc_vector_test" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="45dp"
+        android:gravity="center"
+        android:text="@string/editProfile"
+        android:textAllCaps="true"
+        android:textColor="@android:color/white"
+        android:textSize="18sp"
+        app:layout_constraintStart_toEndOf="@+id/btnBack"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/btnChangeImage"
+        android:layout_width="wrap_content"
+        android:layout_height="20dp"
+        android:layout_marginTop="5dp"
+        android:background="@android:color/transparent"
+        android:text="@string/changeImage"
+        android:textAllCaps="false"
+        android:textColor="@color/colorButton_clone1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imgProfile" />
+
+    <TextView
+        android:id="@+id/txtEmail"
+        android:layout_width="250dp"
+        android:layout_height="38dp"
+        android:background="@drawable/border_edit_text"
+        android:gravity="center_vertical"
+        android:textSize="18sp"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="3dp"
+        app:layout_constraintStart_toEndOf="@+id/textView20"
+        app:layout_constraintTop_toTopOf="@+id/guideline4" />
+
+    <TextView
+        android:id="@+id/txtLocation"
+        android:layout_width="250dp"
+        android:layout_height="38dp"
+        android:background="@drawable/border_edit_text"
+        android:gravity="center_vertical"
+        android:textSize="18sp"
+        android:layout_marginTop="15dp"
+
+        app:layout_constraintStart_toEndOf="@+id/textView18"
+        app:layout_constraintTop_toBottomOf="@+id/txtPhone" />
+
+    <RadioGroup
+        android:id="@+id/rdGender"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintStart_toEndOf="@+id/textView17"
+        app:layout_constraintTop_toBottomOf="@+id/txtName"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="3dp">
+
+        <RadioButton
+            android:id="@+id/radioButton2"
+            android:layout_width="wrap_content"
+            android:layout_height="38dp"
+            android:text="@string/male" />
+
+        <RadioButton
+            android:id="@+id/radioButton"
+            android:layout_width="wrap_content"
+            android:layout_height="38dp"
+            android:text="@string/female" />
+    </RadioGroup>
+
+    <EditText
+        android:id="@+id/txtPhone"
+        android:layout_width="250dp"
+        android:layout_height="38dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="3dp"
+        android:background="@drawable/border_edit_text"
+        android:ems="10"
+        android:hint="@string/phone"
+        android:inputType="textPersonName"
+        app:layout_constraintStart_toEndOf="@+id/textView19"
+        app:layout_constraintTop_toBottomOf="@+id/txtDOB" />
+
+    <TextView
+        android:id="@+id/textView22"
+        android:layout_width="38dp"
+        android:layout_height="38dp"
+        android:layout_marginLeft="50dp"
+        android:layout_marginTop="15dp"
+        android:background="@drawable/ic_cake_black_24dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView17" />
+
+    <TextView
+        android:id="@+id/textView20"
+        android:layout_width="38dp"
+        android:layout_height="38dp"
+        android:layout_marginLeft="50dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="3dp"
+        android:background="@drawable/ic_email"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/guideline4" />
+
+    <TextView
+        android:id="@+id/textView17"
+        android:layout_width="38dp"
+        android:layout_height="38dp"
+        android:layout_marginLeft="50dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginRight="3dp"
+        android:background="@drawable/ic_sex"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView21" />
+
+    <TextView
+        android:id="@+id/textView18"
+        android:layout_width="38dp"
+        android:layout_height="38dp"
+        android:layout_marginLeft="50dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginRight="3dp"
+        android:background="@drawable/ic_location"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView19" />
+
+    <TextView
+        android:id="@+id/textView19"
+        android:layout_width="38dp"
+        android:layout_height="38dp"
+        android:layout_marginLeft="50dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginRight="3dp"
+        android:background="@drawable/ic_phone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView22" />
+
+    <EditText
+        android:id="@+id/txtDOB"
+        android:layout_width="250dp"
+        android:layout_height="38dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="3dp"
+        android:background="@drawable/border_edit_text"
+        android:ems="10"
+        android:hint="@string/DOB"
+        android:inputType="textPersonName"
+        app:layout_constraintStart_toEndOf="@+id/textView22"
+        app:layout_constraintTop_toBottomOf="@+id/rdGender" />
+
+    <TextView
+        android:id="@+id/textView21"
+        android:layout_width="38dp"
+        android:layout_height="38dp"
+        android:layout_marginLeft="50dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginRight="3dp"
+        android:background="@drawable/ic_person_black"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView20" />
+
+    <EditText
+        android:id="@+id/txtName"
+        android:layout_width="250dp"
+        android:layout_height="38dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="3dp"
+        android:background="@drawable/border_edit_text"
+        android:ems="10"
+        android:hint="@string/Name"
+        android:inputType="textPersonName"
+        app:layout_constraintStart_toEndOf="@+id/textView21"
+        app:layout_constraintTop_toBottomOf="@+id/txtEmail" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="191dp" />
+
+    <ImageButton
+        android:id="@+id/btnSave"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:background="@color/colorButton_clone1"
+        app:layout_constraintEnd_toEndOf="@+id/textView5"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_check_black_24dp" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
