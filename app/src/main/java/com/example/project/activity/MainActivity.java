@@ -9,7 +9,7 @@ import android.os.Bundle;
 
 import com.example.project.R;
 import com.example.project.adapter.TabLayoutAdapter;
-import com.example.project.fragment.AddFragment;
+import com.example.project.fragment.RootAddFragment;
 import com.example.project.fragment.CartFragment;
 import com.example.project.fragment.HomeFragment;
 import com.example.project.fragment.ProfileFragment;
@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
         TabLayoutAdapter adapter = new TabLayoutAdapter(getSupportFragmentManager());
         adapter.addFragment(new HomeFragment(), "Home");
         adapter.addFragment(new CartFragment(), "Cart");
-        adapter.addFragment(new AddFragment(), "Add");
+        adapter.addFragment(new RootAddFragment(), "Add");
         adapter.addFragment(new ProfileFragment(), "Profile");
         viewPager.setAdapter(adapter);
         tabLayout.setupWithViewPager(viewPager);

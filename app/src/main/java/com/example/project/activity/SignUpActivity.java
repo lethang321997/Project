@@ -4,8 +4,11 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +17,9 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.RadioButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -54,6 +59,7 @@ public class SignUpActivity extends AppCompatActivity {
     EditText registerEmail;
     EditText registerPhone;
     EditText registerAddress;
+    EditText registerDOB;
     EditText registerPass;
     EditText registerRePass;
     CheckBox checkBoxTerm;
@@ -61,6 +67,10 @@ public class SignUpActivity extends AppCompatActivity {
     Spinner spinnerProvince;
     Spinner spinnerDistrict;
     Spinner spinnerCommune;
+    Button btnGetDate;
+    DatePicker datePicker;
+    RadioButton radioMale;
+    RadioButton radioFemale;
     RequestQueue mQueue;
     ArrayList<Province> listProvince = new ArrayList<>();
     ArrayList<District> listDistrict = new ArrayList<>();
@@ -89,6 +99,9 @@ public class SignUpActivity extends AppCompatActivity {
         registerAddress = findViewById(R.id.registerAddress);
         registerPass = findViewById(R.id.registerPass);
         registerRePass = findViewById(R.id.registerRePass);
+        registerDOB = findViewById(R.id.registerDOB);
+        radioFemale = findViewById(R.id.radioFemale);
+        radioMale = findViewById(R.id.radioMale);
     }
 
 
@@ -133,6 +146,12 @@ public class SignUpActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 registerAccount();
+            }
+        });
+        registerDOB.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getDOB();
             }
         });
     }
@@ -324,6 +343,9 @@ public class SignUpActivity extends AppCompatActivity {
         final String name = registerName.getText().toString();
         final String email = registerEmail.getText().toString();
         final String phone = registerPhone.getText().toString();
+        final String dob = registerDOB.getText().toString();
+        final String gender = (String) (radioMale.isChecked() ? radioMale.getText() : radioFemale.getText());
+
         final String address = registerAddress.getText().toString() + " - " + spinnerCommune.getSelectedItem().toString()
                 + " - " + spinnerDistrict.getSelectedItem().toString() + " - " + spinnerProvince.getSelectedItem().toString();
         final String pass = registerPass.getText().toString();
@@ -334,6 +356,8 @@ public class SignUpActivity extends AppCompatActivity {
             Toast.makeText(this, "Please input name", Toast.LENGTH_LONG).show();
         } else if (phone.isEmpty()) {
             Toast.makeText(this, "Please input phone number", Toast.LENGTH_LONG).show();
+        } else if (dob.isEmpty()) {
+            Toast.makeText(this, "Please input date of birth", Toast.LENGTH_LONG).show();
         } else if (spinnerProvince.getSelectedItemPosition() == 0) {
             Toast.makeText(this, "Please select province", Toast.LENGTH_LONG).show();
         } else if (spinnerDistrict.getSelectedItemPosition() == 0) {
@@ -349,7 +373,9 @@ public class SignUpActivity extends AppCompatActivity {
         } else if (checkFormatEmail(email)) {
             Toast.makeText(this, "Please input exactly email", Toast.LENGTH_LONG).show();
         } else if (phone.length() != 10 && phone.length() != 11) {
-            Toast.makeText(this, "Please input phone number", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Please input exactly phone number", Toast.LENGTH_LONG).show();
+        } else if (pass.length() < 6) {
+            Toast.makeText(this, "Please input password at least 6 characters", Toast.LENGTH_LONG).show();
         } else if (!pass.equals(rePass)) {
             Toast.makeText(this, "Please input exactly re-password", Toast.LENGTH_LONG).show();
         } else {
@@ -363,12 +389,12 @@ public class SignUpActivity extends AppCompatActivity {
                         assert getUser != null;
                         String id = getUser.getUid();
                         DatabaseReference data = FirebaseDatabase.getInstance().getReference("User");
-                        User user = new User(id, email, name, phone, address, pass);
+                        User user = new User(id, name, email, phone, dob, gender, address, pass, 0, "null");
                         data.child(id).setValue(user);
                         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                         startActivity(intent);
                     } else {
-                        Toast.makeText(getApplicationContext(), "Failed", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "Email already exists", Toast.LENGTH_SHORT).show();
                     }
                 }
             });
@@ -378,5 +404,22 @@ public class SignUpActivity extends AppCompatActivity {
     boolean checkFormatEmail(String email) {
         Matcher matcher = SignUpActivity.EMAIL_ADDRESS_REGEX.matcher(email);
         return !matcher.find();
+    }
+
+    void getDOB() {
+        final Dialog dialog = new Dialog(SignUpActivity.this);
+        dialog.setContentView(R.layout.dialog_date_picker);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.show();
+        btnGetDate = dialog.findViewById(R.id.btnGetDate);
+        datePicker = dialog.findViewById(R.id.datePicker);
+        btnGetDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String dob = datePicker.getDayOfMonth() + "/" + (datePicker.getMonth() + 1) + "/" + datePicker.getYear();
+                registerDOB.setText(dob);
+                dialog.dismiss();
+            }
+        });
     }
 }
