@@ -57,7 +57,6 @@ public class MyProductAdapter extends RecyclerView.Adapter<MyProductAdapter.View
             priceProduct = itemView.findViewById(R.id.priceProduct);
         }
 
-
         void bindData(Product product) {
             nameProduct.setText(product.getName());
             priceProduct.setText(String.format("%,d",product.getPrice()));

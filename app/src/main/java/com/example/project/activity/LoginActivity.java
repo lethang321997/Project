@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -33,6 +34,7 @@ public class LoginActivity extends AppCompatActivity {
     TextView textSignUp;
     EditText editEmail;
     EditText editPass;
+    ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +49,7 @@ public class LoginActivity extends AppCompatActivity {
         textSignUp = findViewById(R.id.textSignUp);
         editPass = findViewById(R.id.editPass);
         editEmail = findViewById(R.id.editEmail);
+        progressBar = findViewById(R.id.progressBar);
     }
 
     void initAction() {
@@ -68,17 +71,22 @@ public class LoginActivity extends AppCompatActivity {
     void login() {
         final String email = editEmail.getText().toString();
         final String pass = editPass.getText().toString();
-        FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
-        firebaseAuth.signInWithEmailAndPassword(email, pass).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                if (!task.isSuccessful()) {
-                    Toast.makeText(getApplicationContext(), "Incorrect email or password", Toast.LENGTH_LONG).show();
-                } else {
-                    loginSuccess(email);
+        if (email.isEmpty() || pass.isEmpty()) {
+            Toast.makeText(getApplicationContext(), "Incorrect email or password", Toast.LENGTH_LONG).show();
+        } else {
+            FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+            firebaseAuth.signInWithEmailAndPassword(email, pass).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                @Override
+                public void onComplete(@NonNull Task<AuthResult> task) {
+                    if (!task.isSuccessful()) {
+                        Toast.makeText(getApplicationContext(), "Incorrect email or password", Toast.LENGTH_LONG).show();
+                    } else {
+                        progressBar.setVisibility(View.VISIBLE);
+                        loginSuccess(email);
+                    }
                 }
-            }
-        });
+            });
+        }
     }
 
     void loginSuccess(String email) {
@@ -90,6 +98,7 @@ public class LoginActivity extends AppCompatActivity {
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                 intent.putExtra(Constants.USER, user);
                 startActivity(intent);
+                progressBar.setVisibility(View.GONE);
             }
 
             @Override
