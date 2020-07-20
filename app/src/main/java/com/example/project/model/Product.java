@@ -12,11 +12,12 @@ public class Product {
     private String type;
     private ArrayList<String> images;
     private int price;
+    private String mainImage;
 
     public Product() {
     }
 
-    public Product(String id, String idUser, String name, String brand, int quantity, String color, String type, ArrayList<String> images, int price) {
+    public Product(String id, String idUser, String name, String brand, int quantity, String color, String type, int price) {
         this.id = id;
         this.idUser = idUser;
         this.name = name;
@@ -24,8 +25,15 @@ public class Product {
         this.quantity = quantity;
         this.color = color;
         this.type = type;
-        this.images = images;
         this.price = price;
+    }
+
+    public String getMainImage() {
+        return mainImage;
+    }
+
+    public void setMainImage(String mainImage) {
+        this.mainImage = mainImage;
     }
 
     public String getBrand() {

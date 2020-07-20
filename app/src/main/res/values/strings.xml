@@ -32,11 +32,10 @@
     <string name="DOB">Date of birth</string>
     <string name="phone">Phone</string>
     <string name="location">Location</string>
-    <string name="add_item">Add Item</string>
     <string name="add_product">Add Product</string>
     <string name="name_product">Product Name:</string>
-    <string name="brand">Product Brand:</string>
-    <string name="quantity">Product Quantity:</string>
+    <string name="product_brand">Product Brand:</string>
+    <string name="product_quantity">Product Quantity:</string>
     <string name="color_product">Product Color:</string>
     <string name="product_type">Product Type:</string>
     <string name="product_images">Product Images:</string>
@@ -55,6 +54,8 @@
     <string name="logout">Log out</string>
     <string name="btnConfirm">Confirm</string>
     <string name="btnCancel">Cancel</string>
+    <string name="vnd">VND</string>
+    <string name="quantity">Quantity:</string>
     <string-array name="product_type">
         <item>Accessories</item>
         <item>Bag</item>

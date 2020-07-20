@@ -13,6 +13,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
@@ -68,6 +69,7 @@ public class AddProductFragment extends Fragment {
     ListImageAdapter adapter;
     User user;
     String id;
+    boolean firstImage = true;
 
     public AddProductFragment() {
         // Required empty public constructor
@@ -259,14 +261,13 @@ public class AddProductFragment extends Fragment {
         String idUser = user.getId();
         DatabaseReference data = FirebaseDatabase.getInstance().getReference("Product");
         id = data.push().getKey();
-        Product product = new Product(id, idUser, name, brand, quantity, color, type, listImageUrl, price);
+        Product product = new Product(id, idUser, name, brand, quantity, color, type, price);
         data.child(id).setValue(product);
 
     }
 
     void storeImage() {
         StorageReference storageRef = FirebaseStorage.getInstance().getReference().child("ImageFolder");
-
         for (int i = 0; i < listImage.size(); i++) {
             final Uri imageUri = listImage.get(i);
             final StorageReference imageName = storageRef.child("image" + imageUri.getLastPathSegment());
@@ -278,8 +279,16 @@ public class AddProductFragment extends Fragment {
                         public void onSuccess(Uri uri) {
                             DatabaseReference data = FirebaseDatabase.getInstance().getReference("Product");
                             String imageUrl = String.valueOf(uri);
+                            if (firstImage) {
+                                data.child(id).child("mainImage").setValue(imageUrl);
+                                firstImage = false;
+                            }
                             data.child(id).child("listImage").push().child("imageUrl").setValue(imageUrl);
                             listImageUrl.add(imageUrl);
+                            FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                            transaction.replace(R.id.root_add_fragment, new StallFragment());
+                            transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+                            transaction.commit();
                         }
                     });
                 }
