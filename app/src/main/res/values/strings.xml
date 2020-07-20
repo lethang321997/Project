@@ -29,8 +29,6 @@
     <string name="password">Password</string>
     <string name="changeImage">Change Image</string>
     <string name="Name">Name</string>
-    <string name="male">Male</string>
-    <string name="female">Female</string>
     <string name="DOB">Date of birth</string>
     <string name="phone">Phone</string>
     <string name="location">Location</string>
@@ -54,6 +52,9 @@
     <string name="gender">Gender</string>
     <string name="male">Male</string>
     <string name="female">Female</string>
+    <string name="logout">Log out</string>
+    <string name="btnConfirm">Confirm</string>
+    <string name="btnCancel">Cancel</string>
     <string-array name="product_type">
         <item>Accessories</item>
         <item>Bag</item>

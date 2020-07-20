@@ -18,12 +18,14 @@ import com.example.project.fragment.HomeFragment;
 import com.example.project.fragment.ProfileFragment;
 import com.example.project.model.User;
 import com.google.android.material.tabs.TabLayout;
+import com.squareup.otto.Bus;
+import com.squareup.otto.ThreadEnforcer;
 
 public class MainActivity extends AppCompatActivity {
 
     TabLayout tabLayout;
     ViewPager viewPager;
-    User user;
+    public static User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,5 +80,11 @@ public class MainActivity extends AppCompatActivity {
 
     public User getUser() {
         return user;
+    }
+
+    public void logOut() {
+        user = null;
+//        Intent intent = new Intent(this, LoginActivity.class);
+        finish();
     }
 }

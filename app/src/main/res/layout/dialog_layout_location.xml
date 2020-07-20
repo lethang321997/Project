@@ -1,53 +1,100 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:background="@drawable/background">
 
     <Spinner
-        android:id="@+id/spinnerProvince"
+        android:id="@+id/spinnerEditProvince"
         android:layout_width="285dp"
         android:layout_height="45dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
+        android:background="@drawable/border_edit_text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Spinner
-        android:id="@+id/spinnerDistrict"
+        android:id="@+id/spinnerEditDistrict"
         android:layout_width="285dp"
         android:layout_height="45dp"
-        android:layout_below="@+id/spinnerProvince"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:layout_below="@+id/spinnerEditProvince"
         android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true"
+        android:background="@drawable/border_edit_text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/spinnerProvince" />
+        app:layout_constraintTop_toBottomOf="@+id/spinnerEditProvince" />
 
     <Spinner
-        android:id="@+id/spinnerCommune"
+        android:id="@+id/spinnerEditCommune"
         android:layout_width="285dp"
         android:layout_height="45dp"
-        android:layout_below="@+id/spinnerDistrict"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:layout_below="@+id/spinnerEditDistrict"
         android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true"
+        android:background="@drawable/border_edit_text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/spinnerDistrict" />
+        app:layout_constraintTop_toBottomOf="@+id/spinnerEditDistrict" />
 
     <EditText
-        android:id="@+id/registerAddress"
+        android:id="@+id/editAddress"
         style="@style/style_edit_text"
-        android:layout_below="@+id/spinnerCommune"
+        android:layout_width="285dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:layout_below="@+id/spinnerEditCommune"
         android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true"
+        android:background="@drawable/border_edit_text"
         android:drawableStart="@drawable/ic_location"
         android:hint="@string/input_street_name"
         android:inputType="text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/spinnerCommune" />
+        app:layout_constraintTop_toBottomOf="@+id/spinnerEditCommune" />
+
+    <Button
+        android:id="@+id/btnCancel"
+        android:layout_width="65dp"
+        android:layout_height="35dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginRight="30dp"
+        android:layout_marginBottom="30dp"
+        android:background="@drawable/dialog_button_cancel"
+        android:text="@string/btnCancel"
+        android:textAllCaps="false"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editAddress" />
+
+    <Button
+        android:id="@+id/btnConfirm"
+        android:layout_width="65dp"
+        android:layout_height="35dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginBottom="30dp"
+        android:background="@drawable/button"
+        android:text="@string/btnConfirm"
+        android:textAllCaps="false"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/btnCancel"
+        app:layout_constraintTop_toBottomOf="@+id/editAddress" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -122,7 +122,7 @@
             app:layout_constraintTop_toBottomOf="@+id/radioGroup" />
 
         <Spinner
-            android:id="@+id/spinnerProvince"
+            android:id="@+id/spinnerEditProvince"
             android:layout_width="285dp"
             android:layout_height="45dp"
             android:layout_marginTop="10dp"
@@ -131,25 +131,25 @@
             app:layout_constraintTop_toBottomOf="@+id/textView4" />
 
         <Spinner
-            android:id="@+id/spinnerDistrict"
+            android:id="@+id/spinnerEditDistrict"
             android:layout_width="285dp"
             android:layout_height="45dp"
             android:layout_marginTop="10dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/spinnerProvince" />
+            app:layout_constraintTop_toBottomOf="@+id/spinnerEditProvince" />
 
         <Spinner
-            android:id="@+id/spinnerCommune"
+            android:id="@+id/spinnerEditCommune"
             android:layout_width="285dp"
             android:layout_height="45dp"
             android:layout_marginTop="10dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/spinnerDistrict" />
+            app:layout_constraintTop_toBottomOf="@+id/spinnerEditDistrict" />
 
         <EditText
-            android:id="@+id/registerAddress"
+            android:id="@+id/editAddress"
             style="@style/style_edit_text"
             android:layout_marginTop="10dp"
             android:drawableStart="@drawable/ic_location"
@@ -157,7 +157,7 @@
             android:inputType="text"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/spinnerCommune" />
+            app:layout_constraintTop_toBottomOf="@+id/spinnerEditCommune" />
 
         <EditText
             android:id="@+id/registerPass"
@@ -168,7 +168,7 @@
             android:inputType="textPassword"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/registerAddress" />
+            app:layout_constraintTop_toBottomOf="@+id/editAddress" />
 
         <EditText
             android:id="@+id/registerRePass"

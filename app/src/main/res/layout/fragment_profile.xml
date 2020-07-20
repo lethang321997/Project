@@ -12,7 +12,7 @@
         android:background="@drawable/background">
 
         <ImageView
-            android:id="@+id/imageView"
+            android:id="@+id/imageProfile"
             android:layout_width="113dp"
             android:layout_height="108dp"
             android:layout_margin="10dp"
@@ -25,8 +25,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
-            android:textSize="18sp"
-            app:layout_constraintStart_toEndOf="@+id/imageView"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toEndOf="@+id/imageProfile"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
@@ -34,27 +35,25 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
-            android:layout_marginBottom="10dp"
             android:text="$ :"
             android:textSize="18sp"
-            app:layout_constraintBottom_toTopOf="@+id/btnManageSelling"
-            app:layout_constraintStart_toEndOf="@+id/imageView" />
+            app:layout_constraintStart_toEndOf="@+id/imageProfile"
+            app:layout_constraintTop_toTopOf="@+id/guideline3" />
 
         <TextView
             android:id="@+id/txtCash"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginBottom="10dp"
             android:textSize="18sp"
-            app:layout_constraintBottom_toTopOf="@+id/btnManageSelling"
-            app:layout_constraintStart_toEndOf="@+id/textView9" />
+            android:layout_marginLeft="10dp"
+            app:layout_constraintStart_toEndOf="@+id/textView9"
+            app:layout_constraintTop_toTopOf="@+id/guideline3" />
 
         <Button
             android:id="@+id/btnInsertCash"
-            android:layout_width="68dp"
-            android:layout_height="37dp"
-            android:layout_marginStart="16dp"
+            android:layout_width="50dp"
+            android:layout_height="25dp"
+            android:layout_marginStart="8dp"
             android:background="@drawable/button_clone1"
             android:onClick="@string/insertCash"
             android:text="@string/InsertCash"
@@ -65,15 +64,15 @@
         <Button
             android:id="@+id/btnManageSelling"
             android:layout_width="150dp"
-            android:layout_height="36dp"
+            android:layout_height="25dp"
             android:layout_marginLeft="10dp"
-            android:layout_marginTop="4dp"
+            android:layout_marginTop="40dp"
             android:background="@drawable/button_clone1"
             android:onClick="@string/manageSelling"
             android:text="@string/Sell"
             android:textSize="12sp"
-            app:layout_constraintStart_toEndOf="@+id/imageView"
-            app:layout_constraintTop_toBottomOf="@+id/btnInsertCash" />
+            app:layout_constraintStart_toEndOf="@+id/imageProfile"
+            app:layout_constraintTop_toTopOf="@+id/guideline3" />
 
         <Button
             android:id="@+id/btnBrief"
@@ -86,15 +85,14 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.523"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btnManageSelling" />
+            app:layout_constraintTop_toTopOf="@+id/guideline5" />
 
         <Button
             android:id="@+id/btnOrderHistory"
             android:layout_width="300dp"
             android:layout_height="40dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="15dp"
             android:background="@drawable/button"
-            android:onClick="@string/buyingHistory"
             android:text="@string/orderHistory"
             android:textAllCaps="false"
             app:layout_constraintEnd_toEndOf="parent"
@@ -105,21 +103,40 @@
             android:id="@+id/btnChangePassword"
             android:layout_width="300dp"
             android:layout_height="40dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="15dp"
             android:background="@drawable/button"
-            android:onClick="@string/changePassword"
             android:text="@string/changePassword"
             android:textAllCaps="false"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/btnOrderHistory" />
 
+        <Button
+            android:id="@+id/btnLogout"
+            android:layout_width="300dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/button"
+            android:text="@string/logout"
+            android:textAllCaps="false"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.522"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btnChangePassword" />
+
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            app:layout_constraintGuide_begin="42dp" />
+            app:layout_constraintGuide_begin="52dp" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_begin="123dp" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>

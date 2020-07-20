@@ -4,7 +4,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Color;
@@ -90,13 +89,13 @@ public class SignUpActivity extends AppCompatActivity {
     void initWidget() {
         checkBoxTerm = findViewById(R.id.checkBoxTerm);
         btnSignUpAccount = findViewById(R.id.btnSignUpAccount);
-        spinnerProvince = findViewById(R.id.spinnerProvince);
-        spinnerDistrict = findViewById(R.id.spinnerDistrict);
-        spinnerCommune = findViewById(R.id.spinnerCommune);
+        spinnerProvince = findViewById(R.id.spinnerEditProvince);
+        spinnerDistrict = findViewById(R.id.spinnerEditDistrict);
+        spinnerCommune = findViewById(R.id.spinnerEditCommune);
         registerName = findViewById(R.id.registerName);
         registerEmail = findViewById(R.id.registerEmail);
         registerPhone = findViewById(R.id.registerPhone);
-        registerAddress = findViewById(R.id.registerAddress);
+        registerAddress = findViewById(R.id.editAddress);
         registerPass = findViewById(R.id.registerPass);
         registerRePass = findViewById(R.id.registerRePass);
         registerDOB = findViewById(R.id.registerDOB);
