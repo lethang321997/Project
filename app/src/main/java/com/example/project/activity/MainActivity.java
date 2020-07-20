@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
         TabLayoutAdapter adapter = new TabLayoutAdapter(getSupportFragmentManager());
         adapter.addFragment(new HomeFragment(), "Home");
         adapter.addFragment(new CartFragment(), "Cart");
-        adapter.addFragment(new RootAddFragment(), "Add");
+        adapter.addFragment(new RootAddFragment(), "Stall");
         adapter.addFragment(new ProfileFragment(), "Profile");
         viewPager.setAdapter(adapter);
         tabLayout.setupWithViewPager(viewPager);

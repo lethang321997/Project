@@ -44,7 +44,7 @@ public class ProfileFragment extends Fragment {
         textName = view.findViewById(R.id.txtName);
         textCash = view.findViewById(R.id.txtCash);
         btnBrief = view.findViewById(R.id.btnBrief);
-        User loginUser = LoginActivity.user;
+     //   User loginUser = LoginActivity.user;
 
         //Setting Profile
         btnBrief.setOnClickListener(new View.OnClickListener() {

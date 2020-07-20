@@ -13,6 +13,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
@@ -266,7 +267,6 @@ public class AddProductFragment extends Fragment {
     }
 
     void storeImage() {
-
         StorageReference storageRef = FirebaseStorage.getInstance().getReference().child("ImageFolder");
         for (int i = 0; i < listImage.size(); i++) {
             final Uri imageUri = listImage.get(i);
@@ -285,6 +285,10 @@ public class AddProductFragment extends Fragment {
                             }
                             data.child(id).child("listImage").push().child("imageUrl").setValue(imageUrl);
                             listImageUrl.add(imageUrl);
+                            FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                            transaction.replace(R.id.root_add_fragment, new StallFragment());
+                            transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+                            transaction.commit();
                         }
                     });
                 }
