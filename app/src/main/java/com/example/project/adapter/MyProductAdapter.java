@@ -60,7 +60,7 @@ public class MyProductAdapter extends RecyclerView.Adapter<MyProductAdapter.View
 
         void bindData(Product product) {
             nameProduct.setText(product.getName());
-            priceProduct.setText(String.valueOf(product.getPrice()));
+            priceProduct.setText(String.format("%,d",product.getPrice()));
             quantityProduct.setText(String.valueOf(product.getQuantity()));
             Glide.with(itemView.getContext())
                     .load(product.getMainImage())
