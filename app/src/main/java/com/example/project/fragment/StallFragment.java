@@ -9,14 +9,18 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.example.project.R;
+import com.example.project.activity.MainActivity;
 import com.example.project.adapter.MyProductAdapter;
+import com.example.project.common.Constants;
 import com.example.project.model.Product;
+import com.example.project.model.User;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -32,6 +36,8 @@ public class StallFragment extends Fragment {
     Button btnAddItem;
     RecyclerView recyclerView;
     ArrayList<Product> listProducts = new ArrayList<>();
+    User user;
+    MyProductAdapter adapter;
 
     public StallFragment() {
         // Required empty public constructor
@@ -49,6 +55,7 @@ public class StallFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         initWidget();
+        initData();
         initView();
         initAction();
     }
@@ -72,12 +79,20 @@ public class StallFragment extends Fragment {
     }
 
     void initView() {
-        DatabaseReference data = FirebaseDatabase.getInstance().getReference("Product");
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(layoutManager);
-        final MyProductAdapter adapter = new MyProductAdapter(listProducts);
+        adapter = new MyProductAdapter(getActivity(), listProducts);
         recyclerView.setAdapter(adapter);
-        data.addChildEventListener(new ChildEventListener() {
+    }
+
+    void initData() {
+        MainActivity activity = (MainActivity) getActivity();
+        user = activity.getUser();
+        listProducts.clear();
+        DatabaseReference data = FirebaseDatabase.getInstance().getReference("Product");
+
+        Log.d("AA", user.getId());
+        data.orderByChild(Constants.USER_ID).equalTo(user.getId()).addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                 Product product = snapshot.getValue(Product.class);
