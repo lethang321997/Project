@@ -56,6 +56,8 @@
     <string name="btnCancel">Cancel</string>
     <string name="vnd">VND</string>
     <string name="quantity">Quantity:</string>
+    <string name="String_brand">Brand:</string>
+    <string name="String_color">Color:</string>
     <string-array name="product_type">
         <item>Accessories</item>
         <item>Bag</item>

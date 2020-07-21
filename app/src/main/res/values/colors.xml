@@ -12,4 +12,5 @@
     <color name="textUnselected">#666666</color>
     <color name="colorButton_clone1">#60efff</color>
     <color name="colorDialog_button_cancel">#cc0000</color>
+    <color name="colorDialog_button_clone2">#434444</color>
 </resources>

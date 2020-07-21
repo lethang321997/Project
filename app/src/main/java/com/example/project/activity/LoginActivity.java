@@ -103,7 +103,11 @@ public class LoginActivity extends AppCompatActivity {
 
             @Override
             public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-
+                User user = snapshot.getValue(User.class);
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                intent.putExtra(Constants.USER, user);
+                startActivity(intent);
+                progressBar.setVisibility(View.GONE);
             }
 
             @Override
