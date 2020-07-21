@@ -11,4 +11,6 @@
     <color name="textSelected">#4D8BFF</color>
     <color name="textUnselected">#666666</color>
     <color name="colorButton_clone1">#60efff</color>
+    <color name="colorButtonRed">#F62424</color>
+    <color name="color_blue">#161FFF</color>
 </resources>

@@ -53,6 +53,16 @@
     <string name="gender">Gender</string>
     <string name="vnd">VND</string>
     <string name="quantity">Quantity:</string>
+    <string name="details_product">Details Product</string>
+    <string name="brand">Brand:</string>
+    <string name="name">Name:</string>
+    <string name="color">Color:</string>
+    <string name="type">Type:</string>
+    <string name="price">Price:</string>
+    <string name="delete">Delete</string>
+    <string name="edit">Edit</string>
+    <string name="images">Images:</string>
+    <string name="edit_product">Edit Product</string>
     <string-array name="product_type">
         <item>Accessories</item>
         <item>Bag</item>
