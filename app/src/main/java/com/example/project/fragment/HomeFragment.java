@@ -69,7 +69,7 @@ public class HomeFragment extends Fragment {
 
         MainActivity mainActivity = (MainActivity) getActivity();
         final User user = mainActivity.getUser();
-        txtMoney.setText(String.format("%,d", user.getMoney()) + " VND");
+        txtMoney.setText(String.format("%,d", user.getMoney()) + "VND ");
 
         final ListProductAdapter listProductAdapter = new ListProductAdapter(productList, getActivity());
         StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager(2,
@@ -105,8 +105,25 @@ public class HomeFragment extends Fragment {
             @Override
             public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                 Product product = snapshot.getValue(Product.class);
-                productList.add(product);
-                listProductAdapter.notifyDataSetChanged();
+
+                if (!product.getIdUser().equals(user.getId())) {
+                    //get list Image's url
+                    ArrayList<String> listImageUrl = null;
+                    for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                        if (dataSnapshot.getKey().equals("listImage")) {
+                            listImageUrl = new ArrayList<>();
+                            for (DataSnapshot dataSnapshot_image : dataSnapshot.getChildren()) {
+                                for (DataSnapshot dataSnapshot_imageUrl : dataSnapshot_image.getChildren()) {
+                                    String imageUrl = dataSnapshot_imageUrl.getValue(String.class);
+                                    listImageUrl.add(imageUrl);
+                                }
+                            }
+                        }
+                    }
+                    product.setImages(listImageUrl);
+                    productList.add(product);
+                    listProductAdapter.notifyDataSetChanged();
+                }
             }
 
             @Override

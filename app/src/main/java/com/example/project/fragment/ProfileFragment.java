@@ -71,7 +71,7 @@ public class ProfileFragment extends Fragment {
 
         Glide.with(this).load(loginedUser.getImageUrl()).into(imageProfile);
         textName.setText(loginedUser.getName());
-        textCash.setText(String.format("%,d",loginedUser.getMoney())+ "VND");
+        textCash.setText(String.format("%,d",loginedUser.getMoney())+ " VND ");
 
         //Cash
         btnCash.setOnClickListener(new View.OnClickListener() {

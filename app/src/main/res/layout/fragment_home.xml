@@ -14,7 +14,9 @@
         android:layout_marginStart="4dp"
         android:layout_marginTop="5dp"
         android:background="@drawable/border_edit_text"
+        android:drawableStart="?android:attr/actionModeWebSearchDrawable"
         android:ems="10"
+        android:hint="Search products"
         android:inputType="textPersonName"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

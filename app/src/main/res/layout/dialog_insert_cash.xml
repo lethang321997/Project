@@ -6,44 +6,42 @@
     android:layout_height="match_parent"
     android:background="@drawable/background"
     android:paddingRight="20dp"
-    android:paddingBottom="15dp">
+    android:paddingBottom="20dp">
 
 
     <Button
         android:id="@+id/btnConfirm_insertCash"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="30dp"
-        android:background="@drawable/button_clone1"
+        android:layout_height="40dp"
+        android:layout_marginRight="5dp"
+        android:background="@drawable/button"
         android:text="@string/btnConfirm"
         android:textAllCaps="false"
-        app:layout_constraintBaseline_toBaselineOf="@+id/btnCancel_insertCash"
-        app:layout_constraintStart_toStartOf="@+id/txtCash_insertCash" />
+        app:layout_constraintBottom_toBottomOf="@+id/btnCancel_insertCash"
+        app:layout_constraintEnd_toStartOf="@+id/btnCancel_insertCash"
+        app:layout_constraintTop_toTopOf="@+id/btnCancel_insertCash" />
 
     <Button
         android:id="@+id/btnCancel_insertCash"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="7dp"
-        android:layout_marginTop="75dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="10dp"
         android:background="@drawable/dialog_button_cancel"
         android:text="@string/btnCancel"
         android:textAllCaps="false"
-        app:layout_constraintStart_toEndOf="@+id/btnConfirm_insertCash"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintEnd_toEndOf="@+id/txtCash_insertCash"
+        app:layout_constraintTop_toBottomOf="@+id/txtCash_insertCash" />
 
     <EditText
         android:id="@+id/txtCash_insertCash"
         android:layout_width="wrap_content"
         android:layout_height="35dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="24dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="20dp"
         android:background="@drawable/border_edit_text"
         android:ems="10"
         android:hint="Input number of cash"
         android:inputType="number"
-        app:layout_constraintBottom_toTopOf="@+id/btnConfirm_insertCash"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

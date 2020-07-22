@@ -3,11 +3,20 @@ package com.example.project.model;
 public class Order {
 
     private String id;
-    private User user;
-    private Product product;
+    private String userId;
+    private String productId;
     private int orderedQuantity;
+    private int orderedPrice;
     private String orderedAddress;
     private String status;
+
+    public int getOrderedPrice() {
+        return orderedPrice;
+    }
+
+    public void setOrderedPrice(int orderedPrice) {
+        this.orderedPrice = orderedPrice;
+    }
 
     public String getId() {
         return id;
@@ -17,20 +26,20 @@ public class Order {
         this.id = id;
     }
 
-    public User getUser() {
-        return user;
+    public String getUserId() {
+        return userId;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
-    public Product getProduct() {
-        return product;
+    public String getProductId() {
+        return productId;
     }
 
-    public void setProduct(Product product) {
-        this.product = product;
+    public void setProductId(String productId) {
+        this.productId = productId;
     }
 
     public int getOrderedQuantity() {

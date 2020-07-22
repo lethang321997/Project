@@ -1,6 +1,7 @@
 package com.example.project.activity.buyer;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -9,11 +10,18 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.denzcoskun.imageslider.ImageSlider;
 import com.denzcoskun.imageslider.models.SlideModel;
 import com.example.project.R;
+import com.example.project.activity.MainActivity;
+import com.example.project.model.Order;
 import com.example.project.model.Product;
+import com.example.project.model.User;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -23,6 +31,7 @@ import com.denzcoskun.imageslider.constants.ScaleTypes;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class DetailProductActivity extends AppCompatActivity {
 
@@ -39,6 +48,9 @@ public class DetailProductActivity extends AppCompatActivity {
     private TextView txtProductPrice;
     private Button btnAddCart;
     private Button btnBuyNow;
+
+    Product selectedProduct;
+    User loginedUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,9 +71,11 @@ public class DetailProductActivity extends AppCompatActivity {
         btnAddCart = findViewById(R.id.btnAddCart_productDetail);
         btnBuyNow = findViewById(R.id.btnBuyNow_productDetail);
 
+        loginedUser = MainActivity.user;
+
         //init
         Intent intent = getIntent();
-        Product selectedProduct = (Product) intent.getSerializableExtra("selectedProduct");
+        selectedProduct = (Product) intent.getSerializableExtra("selectedProduct");
         addImageToViewFlipper(selectedProduct.getImages());
 
         txtProductName.setText(selectedProduct.getName());
@@ -79,26 +93,79 @@ public class DetailProductActivity extends AppCompatActivity {
             }
         });
         txtCurrentQuantity.setText(selectedProduct.getQuantity() == 0 ? "Not available" : "1");
-        txtProductQuantity.setText(String.valueOf(selectedProduct.getQuantity()) + " products available");
+
+        //get availble product's quantity
+        final int[] productQuantityAvailable = {0};
+        final int productQuantity = selectedProduct.getQuantity();
+        final int[] productQuantityPaid = {0};
+
+        txtProductQuantity.setText(productQuantity + " products available");
+        databaseReference.child("Order").addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                Order order = snapshot.getValue(Order.class);
+                if (order.getProductId().equals(selectedProduct.getId())) {
+                    int paidProductQuantity = order.getOrderedQuantity();
+                    productQuantityPaid[0] += paidProductQuantity;
+                }
+                productQuantityAvailable[0] = productQuantity - productQuantityPaid[0];
+                String statusProductQuantity = "";
+                if (productQuantityAvailable[0] == 0) {
+                    statusProductQuantity = "Not available";
+                    //disable button plus, minus and textview currentQuantity, btnAddToCart and btnBuyNow
+                    btnPlus.setVisibility(View.GONE);
+                    btnMinus.setVisibility(View.GONE);
+                    txtCurrentQuantity.setVisibility(View.GONE);
+                    btnAddCart.setVisibility(View.GONE);
+                    btnBuyNow.setVisibility(View.GONE);
+                } else {
+                    statusProductQuantity = productQuantityAvailable[0] + " products available";
+                }
+                txtProductQuantity.setText(statusProductQuantity);
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+
         txtColor.setText(selectedProduct.getColor());
         txtBrand.setText(selectedProduct.getBrand());
-        txtProductPrice.setText(String.format("%,d",selectedProduct.getPrice()));
+        txtProductPrice.setText(String.format("%,d", selectedProduct.getPrice()));
 
         //Back
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                   finish();
+                finish();
             }
         });
 
-        final int productQuantity = selectedProduct.getQuantity();
         //Plus product's quantity
         btnPlus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 int currentQuantity = Integer.parseInt(txtCurrentQuantity.getText().toString());
-                if (currentQuantity < productQuantity) {
+                if (productQuantityAvailable[0] == 0) {
+                    productQuantityAvailable[0] = productQuantity;
+                }
+                if (currentQuantity < productQuantityAvailable[0]) {
                     currentQuantity += 1;
                     txtCurrentQuantity.setText(String.valueOf(currentQuantity));
                 }
@@ -121,7 +188,7 @@ public class DetailProductActivity extends AppCompatActivity {
         btnAddCart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                addToCart(v);
             }
         });
 
@@ -146,12 +213,32 @@ public class DetailProductActivity extends AppCompatActivity {
         return textView.getText().toString();
     }
 
-    public void addToCart() {
+    public void addToCart(View v) {
+        insertOrderToDatabase(v, "confirming");
+    }
+
+    public void buyNow() {
 
     }
 
-    public void insertOrder(String status) {
-
+    public void insertOrderToDatabase(final View v, String status) {
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Order");
+        Order order = new Order();
+        String id = databaseReference.push().getKey();
+        order.setId(id);
+        order.setUserId(loginedUser.getId());
+        order.setProductId(selectedProduct.getId());
+        order.setOrderedQuantity(Integer.parseInt(txtCurrentQuantity.getText().toString()));
+        order.setOrderedPrice(selectedProduct.getPrice());
+        order.setOrderedAddress("");
+        order.setStatus(status);
+        databaseReference.child(id).setValue(order).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                Toast.makeText(v.getContext(), "Make order successfully", Toast.LENGTH_SHORT).show();
+                finish();
+            }
+        });
     }
 
 }

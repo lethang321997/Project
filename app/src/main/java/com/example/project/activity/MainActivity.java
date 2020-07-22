@@ -52,8 +52,8 @@ public class MainActivity extends AppCompatActivity {
         viewPager.setAdapter(adapter);
         tabLayout.setupWithViewPager(viewPager);
         tabLayout.getTabAt(0).setIcon(R.drawable.ic_home_tab);
-        tabLayout.getTabAt(1).setIcon(R.drawable.ic_cart_tab);
-        tabLayout.getTabAt(2).setIcon(R.drawable.ic_add_tab);
+        tabLayout.getTabAt(1).setIcon(R.drawable.ic_add_tab);
+        tabLayout.getTabAt(2).setIcon(R.drawable.ic_cart_tab);
         tabLayout.getTabAt(3).setIcon(R.drawable.ic_profile_tab);
         final int tabIconColor = ContextCompat.getColor(getApplicationContext(), R.color.tabSelected);
         final int tabUnselectIcon = ContextCompat.getColor(getApplicationContext(), R.color.tabUnselected);

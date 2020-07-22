@@ -200,10 +200,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="25dp"
-                android:text="@string/vnd"
+                android:text="VND "
                 android:textColor="@color/colorBackgroundTabLayout"
                 android:textSize="16sp"
-                android:textStyle="bold|italic"
+                android:textStyle="normal|bold|italic"
                 app:layout_constraintBottom_toBottomOf="@+id/txtProductPrice_productDetail"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/txtProductPrice_productDetail" />
@@ -230,6 +230,7 @@
                 android:text="Add to cart"
                 android:textAllCaps="false"
                 android:textColor="@color/colorAccent"
+                android:textStyle="normal|bold"
                 app:layout_constraintBottom_toBottomOf="@+id/btnBuyNow_productDetail"
                 app:layout_constraintEnd_toStartOf="@+id/btnBuyNow_productDetail"
                 app:layout_constraintTop_toTopOf="@+id/btnBuyNow_productDetail" />
@@ -239,10 +240,11 @@
                 android:layout_width="120dp"
                 android:layout_height="50dp"
                 android:layout_marginRight="20dp"
-                android:layout_marginBottom="30dp"
+                android:layout_marginBottom="20dp"
                 android:background="@drawable/button"
                 android:text="Buy now"
                 android:textAllCaps="false"
+                android:textStyle="normal|bold"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>

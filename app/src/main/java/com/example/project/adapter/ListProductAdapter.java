@@ -41,10 +41,7 @@ import java.util.List;
 
 public class ListProductAdapter extends RecyclerView.Adapter<ListProductAdapter.ViewHolder> {
 
-    private Context context;
     private List<Product> productList;
-    DatabaseAdapter databaseAdapter = new DatabaseAdapter();
-    DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
     FragmentActivity fragmentActivity;
 
     public ListProductAdapter(List<Product> productList, FragmentActivity fragmentActivity) {
@@ -69,7 +66,7 @@ public class ListProductAdapter extends RecyclerView.Adapter<ListProductAdapter.
         void bindData(Product product) {
             Glide.with(itemView.getContext()).load(product.getMainImage()).into(imageProduct);
             txtProductName.setText(product.getName());
-            txtProductPrice.setText(String.format("%,d",product.getPrice()));
+            txtProductPrice.setText(String.format("%,d",product.getPrice()) + "VND ");
         }
     }
 
@@ -86,7 +83,6 @@ public class ListProductAdapter extends RecyclerView.Adapter<ListProductAdapter.
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
         holder.bindData(productList.get(position));
-
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
