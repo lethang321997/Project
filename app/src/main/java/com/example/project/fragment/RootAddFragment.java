@@ -2,6 +2,7 @@ package com.example.project.fragment;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -28,8 +29,7 @@ public class RootAddFragment extends Fragment {
         // Inflate the layout for this fragment
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
         transaction.replace(R.id.root_add_fragment, new StallFragment());
-        transaction.commit();
+        transaction.commitAllowingStateLoss();
         return inflater.inflate(R.layout.fragment_root_add, container, false);
     }
-
 }
