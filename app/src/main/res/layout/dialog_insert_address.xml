@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background"
+    android:paddingBottom="20dp"
+    android:paddingRight="20dp">
+
+    <EditText
+        android:id="@+id/txtAddress_orderedProduct"
+        android:layout_width="300dp"
+        android:layout_height="50dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/border_edit_text"
+        android:ems="10"
+        android:hint="@string/address"
+        android:inputType="textPersonName"
+        android:textColor="@color/colorBackgroundTabLayout"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/btnConfirmAddress_orderedProduct"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="10dp"
+        android:background="@drawable/button"
+        android:text="@string/btnConfirm"
+        android:textAllCaps="false"
+        app:layout_constraintEnd_toStartOf="@+id/btnCancelAddress_orderedProduct"
+        app:layout_constraintTop_toBottomOf="@+id/txtAddress_orderedProduct" />
+
+    <Button
+        android:id="@+id/btnCancelAddress_orderedProduct"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:background="@drawable/dialog_button_cancel"
+        android:text="@string/btnCancel"
+        android:textAllCaps="false"
+        app:layout_constraintEnd_toEndOf="@+id/txtAddress_orderedProduct"
+        app:layout_constraintTop_toTopOf="@+id/btnConfirmAddress_orderedProduct" />
+</androidx.constraintlayout.widget.ConstraintLayout>

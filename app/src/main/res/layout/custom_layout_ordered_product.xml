@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cardView_orderedProduct"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:cardCornerRadius="10dp"
+    app:cardPreventCornerOverlap="true"
+    app:cardUseCompatPadding="true">
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/imgProduct_orderedProduct"
+            android:layout_width="130dp"
+            android:layout_height="123dp"
+            app:layout_constraintStart_toEndOf="@+id/ckBox_orderedProduct"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_profile_tab" />
+
+        <TextView
+            android:id="@+id/txtProductName_orderedProduct"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="5dp"
+            android:textColor="@color/colorBackgroundTabLayout"
+            android:textSize="16dp"
+            android:textStyle="normal|bold"
+            app:layout_constraintStart_toEndOf="@+id/imgProduct_orderedProduct"
+            app:layout_constraintTop_toTopOf="@+id/imgProduct_orderedProduct" />
+
+        <TextView
+            android:id="@+id/textView32"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="15dp"
+            android:text="@string/quantity"
+            android:textColor="@color/colorBackgroundTabLayout"
+            android:textSize="16dp"
+            android:textStyle="normal"
+            app:layout_constraintStart_toEndOf="@+id/imgProduct_orderedProduct"
+            app:layout_constraintTop_toBottomOf="@+id/txtProductName_orderedProduct" />
+
+        <TextView
+            android:id="@+id/txtOrderedQuantity_orderedProduct"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="3dp"
+            android:textColor="@color/colorBackgroundTabLayout"
+            android:textSize="16dp"
+            app:layout_constraintBottom_toBottomOf="@+id/textView32"
+            app:layout_constraintStart_toEndOf="@+id/textView32"
+            app:layout_constraintTop_toTopOf="@+id/textView32" />
+
+        <CheckBox
+            android:id="@+id/ckBox_orderedProduct"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="@+id/imgProduct_orderedProduct"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/imgProduct_orderedProduct" />
+
+        <TextView
+            android:id="@+id/textView35"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/ic_attach_money_black_24dp"
+            app:layout_constraintBottom_toBottomOf="@+id/txtProductPrice_orderedProduct"
+            app:layout_constraintEnd_toStartOf="@+id/txtProductPrice_orderedProduct"
+            app:layout_constraintTop_toTopOf="@+id/txtProductPrice_orderedProduct" />
+
+        <TextView
+            android:id="@+id/txtProductPrice_orderedProduct"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
+            android:textColor="@color/colorBackgroundTabLayout"
+            android:textSize="16dp"
+            android:textStyle="italic"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/guideline7" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline7"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_begin="93dp" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>

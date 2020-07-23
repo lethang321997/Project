@@ -21,9 +21,9 @@ import com.google.android.material.tabs.TabLayout;
 
 public class MainActivity extends AppCompatActivity {
 
-    TabLayout tabLayout;
-    ViewPager viewPager;
-    User user;
+    public static TabLayout tabLayout;
+    public static ViewPager viewPager;
+    public static User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,5 +78,10 @@ public class MainActivity extends AppCompatActivity {
 
     public User getUser() {
         return user;
+    }
+
+    public void logOut() {
+        user = null;
+        finish();
     }
 }
