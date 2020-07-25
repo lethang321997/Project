@@ -1,5 +1,6 @@
 package com.example.project.fragment;
 
+import android.graphics.Color;
 import android.graphics.ImageDecoder;
 import android.os.Bundle;
 
@@ -15,8 +16,11 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.GridView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -33,6 +37,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -43,8 +48,9 @@ public class HomeFragment extends Fragment {
     private RecyclerView recyclerView;
     private TextView txtMoney;
     private EditText txtSearch;
-
+    private Spinner spinner;
     DatabaseAdapter databaseAdapter = new DatabaseAdapter();
+    boolean firstLoad = true;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -61,22 +67,78 @@ public class HomeFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull final View view, @Nullable Bundle savedInstanceState) {
-        productList = new ArrayList<>();
         super.onViewCreated(view, savedInstanceState);
-        recyclerView = view.findViewById(R.id.recyclerView_listProduct);
-        txtSearch = view.findViewById(R.id.txtSearch);
-        txtMoney = view.findViewById(R.id.txtMoney_home);
+        productList = new ArrayList<>();
+        initWidget();
+        initSpinner();
+        initAction();
+        initData();
+    }
 
+    void initWidget() {
+        recyclerView = getView().findViewById(R.id.recyclerView_listProduct);
+        txtSearch = getView().findViewById(R.id.txtSearch);
+        txtMoney = getView().findViewById(R.id.txtMoney_home);
+        spinner = getView().findViewById(R.id.spinnerType);
+    }
+
+    void initSpinner() {
+        String[] listType = getResources().getStringArray(R.array.product_type);
+        ArrayList<String> listTypes = new ArrayList<>(Arrays.asList(listType));
+        listTypes.add(0, "All");
+        ArrayAdapter<String> adapterType = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, listTypes);
+        adapterType.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
+        spinner.setAdapter(adapterType);
+
+    }
+
+    void initAction() {
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (position != 0) {
+                    ArrayList<Product> newList = new ArrayList<>();
+                    String type = parent.getItemAtPosition(position).toString();
+                    for (Product product : productList) {
+                        if (product.getType().equals(type)) {
+                            newList.add(product);
+                        }
+                    }
+                    ListProductAdapter listProductAdapter = new ListProductAdapter(newList, getActivity());
+                    StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager(2,
+                            StaggeredGridLayoutManager.VERTICAL);
+                    recyclerView.setLayoutManager(staggeredGridLayoutManager);
+                    recyclerView.setAdapter(listProductAdapter);
+                    firstLoad = false;
+                } else {
+                    if (!firstLoad) {
+                        ListProductAdapter listProductAdapter = new ListProductAdapter(productList, getActivity());
+                        StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager(2,
+                                StaggeredGridLayoutManager.VERTICAL);
+                        recyclerView.setLayoutManager(staggeredGridLayoutManager);
+                        recyclerView.setAdapter(listProductAdapter);
+                    }
+                }
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+    }
+
+    void initData() {
         MainActivity mainActivity = (MainActivity) getActivity();
         final User user = mainActivity.getUser();
-        txtMoney.setText(String.format("%,d", user.getMoney()) + "VND ");
-
+        txtMoney.setText(String.format("%,d", user.getMoney()) + " VND ");
         final ListProductAdapter listProductAdapter = new ListProductAdapter(productList, getActivity());
         StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager(2,
                 StaggeredGridLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(staggeredGridLayoutManager);
-        final DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
         recyclerView.setAdapter(listProductAdapter);
+        final DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
         databaseReference.child("Product").addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
@@ -141,6 +203,5 @@ public class HomeFragment extends Fragment {
 
             }
         });
-
     }
 }

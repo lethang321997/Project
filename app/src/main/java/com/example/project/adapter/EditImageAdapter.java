@@ -11,15 +11,20 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.project.R;
+import com.example.project.fragment.EditProductFragment;
 
 import java.util.ArrayList;
 
-public class ListImageAdapter extends RecyclerView.Adapter<ListImageAdapter.ViewHolder> {
-    private ArrayList<Bitmap> listImage;
+public class EditImageAdapter extends RecyclerView.Adapter<EditImageAdapter.ViewHolder> {
 
-    public ListImageAdapter(ArrayList<Bitmap> listImage) {
-        this.listImage = listImage;
+    ArrayList<Bitmap> listImagesBitmap;
+    public static boolean deletedMainImage = false;
+
+    public EditImageAdapter(ArrayList<Bitmap> listImagesBitmap) {
+
+        this.listImagesBitmap = listImagesBitmap;
     }
 
     @NonNull
@@ -32,11 +37,16 @@ public class ListImageAdapter extends RecyclerView.Adapter<ListImageAdapter.View
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
-        holder.bindData(listImage.get(position));
+        holder.bindDataUrl(listImagesBitmap.get(position));
         holder.btnDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                listImage.remove(position);
+                listImagesBitmap.remove(position);
+                EditProductFragment.firstSize--;
+                EditProductFragment.addDeletedImage(position);
+                if (position == 0) {
+                    deletedMainImage = true;
+                }
                 notifyDataSetChanged();
             }
         });
@@ -44,7 +54,7 @@ public class ListImageAdapter extends RecyclerView.Adapter<ListImageAdapter.View
 
     @Override
     public int getItemCount() {
-        return listImage.size();
+        return listImagesBitmap.size();
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
@@ -57,7 +67,8 @@ public class ListImageAdapter extends RecyclerView.Adapter<ListImageAdapter.View
             btnDelete = itemView.findViewById(R.id.btnDeleteImage);
         }
 
-        void bindData(Bitmap imageBitmap) {
+
+        void bindDataUrl(Bitmap imageBitmap) {
             image.setImageBitmap(imageBitmap);
         }
     }

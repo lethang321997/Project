@@ -18,6 +18,7 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -31,6 +32,7 @@ import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.project.R;
+import com.example.project.common.Constants;
 import com.example.project.model.Commune;
 import com.example.project.model.District;
 import com.example.project.model.Province;
@@ -70,12 +72,12 @@ public class SignUpActivity extends AppCompatActivity {
     DatePicker datePicker;
     RadioButton radioMale;
     RadioButton radioFemale;
+    ProgressBar progressBar;
     RequestQueue mQueue;
     ArrayList<Province> listProvince = new ArrayList<>();
     ArrayList<District> listDistrict = new ArrayList<>();
     ArrayList<Commune> listCommune = new ArrayList<>();
-    public static final Pattern EMAIL_ADDRESS_REGEX =
-            Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,6 +103,7 @@ public class SignUpActivity extends AppCompatActivity {
         registerDOB = findViewById(R.id.registerDOB);
         radioFemale = findViewById(R.id.radioFemale);
         radioMale = findViewById(R.id.radioMale);
+        progressBar = findViewById(R.id.progressBar);
     }
 
 
@@ -316,7 +319,9 @@ public class SignUpActivity extends AppCompatActivity {
                                 int id = object.getInt("ID");
                                 String name = object.getString("Title");
                                 Commune commune = new Commune(id, name);
-                                listCommune.add(commune);
+                                if(!commune.getName().equals("Chưa rõ")){
+                                    listCommune.add(commune);
+                                }
                             }
                             Collections.sort(listCommune, new Comparator<Commune>() {
                                 @Override
@@ -383,7 +388,7 @@ public class SignUpActivity extends AppCompatActivity {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     if (task.isSuccessful()) {
-                        Toast.makeText(getApplicationContext(), "Successful", Toast.LENGTH_SHORT).show();
+                        progressBar.setVisibility(View.VISIBLE);
                         FirebaseUser getUser = FirebaseAuth.getInstance().getCurrentUser();
                         assert getUser != null;
                         String id = getUser.getUid();
@@ -391,7 +396,9 @@ public class SignUpActivity extends AppCompatActivity {
                         User user = new User(id, name, email, phone, dob, gender, address, pass, 0, "null");
                         data.child(id).setValue(user);
                         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                        intent.putExtra(Constants.USER, user);
                         startActivity(intent);
+                        progressBar.setVisibility(View.GONE);
                     } else {
                         Toast.makeText(getApplicationContext(), "Email already exists", Toast.LENGTH_SHORT).show();
                     }
@@ -401,7 +408,7 @@ public class SignUpActivity extends AppCompatActivity {
     }
 
     boolean checkFormatEmail(String email) {
-        Matcher matcher = SignUpActivity.EMAIL_ADDRESS_REGEX.matcher(email);
+        Matcher matcher = Constants.EMAIL_ADDRESS_REGEX.matcher(email);
         return !matcher.find();
     }
 

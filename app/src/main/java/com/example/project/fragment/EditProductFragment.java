@@ -5,9 +5,11 @@ import android.app.Dialog;
 import android.content.ClipData;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -18,32 +20,51 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.project.R;
 import com.example.project.activity.MainActivity;
+
+import com.example.project.adapter.EditImageAdapter;
 import com.example.project.adapter.ListImageAdapter;
 import com.example.project.common.Constants;
 import com.example.project.model.Product;
 import com.example.project.model.User;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import org.apache.http.params.HttpConnectionParams;
+
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -60,17 +81,20 @@ public class EditProductFragment extends Fragment {
     Spinner spinnerColor;
     Spinner spinnerType;
     Button btnSelectImage;
-    Button btnAddProduct;
+    Button btnSave;
+    ImageView btnBack;
     TextView takePhoto;
     TextView selectFromLibrary;
+    ProgressBar progressBar;
     RecyclerView recyclerViewImage;
-    ArrayList<Uri> listImage = new ArrayList<>();
-    ArrayList<String> listImageUrl = new ArrayList<>();
-    ListImageAdapter adapter;
+    static ArrayList<String> listImageUrl = new ArrayList<>();
+    static ArrayList<String> listImageDelete = new ArrayList<>();
+    ArrayList<Bitmap> listImageBitmap = new ArrayList<>();
+    EditImageAdapter adapter;
     User user;
     String id;
-    boolean firstImage = true;
-
+    public static int firstSize;
+    Product newProduct;
 
     public EditProductFragment() {
         // Required empty public constructor
@@ -108,12 +132,14 @@ public class EditProductFragment extends Fragment {
         initView();
         initSpinner();
         initAction();
-        initAdapter();
     }
 
     void initData() {
         MainActivity activity = (MainActivity) getActivity();
         user = activity.getUser();
+        id = product.getId();
+        listImageUrl = product.getImages();
+        new ConvertUrlToUri().execute(listImageUrl);
     }
 
     void initWidget() {
@@ -121,11 +147,13 @@ public class EditProductFragment extends Fragment {
         spinnerType = getView().findViewById(R.id.spinnerType);
         btnSelectImage = getView().findViewById(R.id.btnSelectImage);
         recyclerViewImage = getView().findViewById(R.id.recyclerViewImage);
-        btnAddProduct = getView().findViewById(R.id.btnAddProduct);
         editName = getView().findViewById(R.id.editProductName);
         editBrand = getView().findViewById(R.id.editBrand);
         editQuantity = getView().findViewById(R.id.editQuantity);
         editPrice = getView().findViewById(R.id.editProductPrice);
+        btnBack = getView().findViewById(R.id.btnBack);
+        btnSave = getView().findViewById(R.id.btnSave);
+        progressBar = getView().findViewById(R.id.progressBar);
     }
 
     void initView() {
@@ -194,19 +222,18 @@ public class EditProductFragment extends Fragment {
                 dialogSelectImage();
             }
         });
-        btnAddProduct.setOnClickListener(new View.OnClickListener() {
+        btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                addProduct();
+                getFragmentManager().popBackStack();
             }
         });
-    }
-
-    void initAdapter() {
-        StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL);
-        recyclerViewImage.setLayoutManager(layoutManager);
-        adapter = new ListImageAdapter(listImage);
-        recyclerViewImage.setAdapter(adapter);
+        btnSave.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                saveProduct();
+            }
+        });
     }
 
     private void dialogSelectImage() {
@@ -245,30 +272,38 @@ public class EditProductFragment extends Fragment {
             if (clipData != null) {
                 for (int i = 0; i < clipData.getItemCount(); i++) {
                     Uri imageUri = clipData.getItemAt(i).getUri();
-                    if (listImage.size() < 6) {
-                        listImage.add(imageUri);
-                    } else {
-                        Toast.makeText(getContext(), "Please select maximum 6 images", Toast.LENGTH_LONG).show();
+                    try {
+                        Bitmap imageBitmap = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), imageUri);
+                        if (listImageBitmap.size() < 6) {
+                            listImageBitmap.add(imageBitmap);
+                        } else {
+                            Toast.makeText(getContext(), "Please select maximum 6 images", Toast.LENGTH_LONG).show();
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
                     }
                 }
             } else {
                 Uri imageUri = data.getData();
-                if (listImage.size() < 6) {
-                    listImage.add(imageUri);
-                } else {
-                    Toast.makeText(getContext(), "Please select maximum 6 images", Toast.LENGTH_LONG).show();
+                try {
+                    Bitmap imageBitmap = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), imageUri);
+                    if (listImageBitmap.size() < 6) {
+                        listImageBitmap.add(imageBitmap);
+                    } else {
+                        Toast.makeText(getContext(), "Please select maximum 6 images", Toast.LENGTH_LONG).show();
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
+
             }
 
         }
         if (requestCode == Constants.TAKE_PHOTO_CODE && resultCode == Activity.RESULT_OK) {
             Bundle extras = data.getExtras();
             Bitmap imageBitmap = (Bitmap) extras.get("data");
-            imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, new ByteArrayOutputStream());
-            String path = MediaStore.Images.Media.insertImage(getContext().getContentResolver(), imageBitmap, null, null);
-            Uri imageUri = Uri.parse(path);
-            if (listImage.size() < 6) {
-                listImage.add(imageUri);
+            if (listImageBitmap.size() < 6) {
+                listImageBitmap.add(imageBitmap);
             } else {
                 Toast.makeText(getContext(), "Please select maximum 6 images", Toast.LENGTH_LONG).show();
             }
@@ -276,49 +311,144 @@ public class EditProductFragment extends Fragment {
         adapter.notifyDataSetChanged();
     }
 
-    void addProduct() {
-        storeImage();
+
+    void updateImage() {
+        StorageReference storageRef = FirebaseStorage.getInstance().getReference().child("ImageFolder");
+        for (int i = 0; i < listImageDelete.size(); i++) {
+            final DatabaseReference data = FirebaseDatabase.getInstance().getReference("Product");
+            data.child(id).child("listImage").orderByChild("imageUrl").equalTo(listImageDelete.get(i)).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                        String key = dataSnapshot.getKey();
+                        data.child(id).child("listImage").child(key).removeValue();
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+        }
+        if (firstSize < listImageBitmap.size()) {
+            progressBar.setVisibility(View.VISIBLE);
+            for (int i = firstSize; i < listImageBitmap.size(); i++) {
+                Bitmap bitmap = listImageBitmap.get(i);
+                ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
+                byte[] dataImage = outputStream.toByteArray();
+                final StorageReference imageName = storageRef.child("image" + bitmap.getGenerationId());
+                final int count = i;
+                imageName.putBytes(dataImage).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        imageName.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                            @Override
+                            public void onSuccess(Uri uri) {
+                                DatabaseReference data = FirebaseDatabase.getInstance().getReference("Product");
+                                String imageUrl = String.valueOf(uri);
+                                if (EditImageAdapter.deletedMainImage && listImageUrl.size() == 0) {
+                                    data.child(id).child("mainImage").setValue(imageUrl);
+                                }
+                                listImageUrl.add(imageUrl);
+                                if (count == listImageBitmap.size() - 1) {
+                                    data.child(id).child("listImage").push().child("imageUrl").setValue(imageUrl).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            newProduct.setImages(listImageUrl);
+                                            DetailMyProductFragment.product = newProduct;
+                                            getActivity().getSupportFragmentManager().popBackStack();
+                                            progressBar.setVisibility(View.GONE);
+                                        }
+                                    });
+                                } else {
+                                    data.child(id).child("listImage").push().child("imageUrl").setValue(imageUrl);
+                                }
+                            }
+                        });
+                    }
+                });
+            }
+        } else {
+            newProduct.setImages(listImageUrl);
+            DetailMyProductFragment.product = newProduct;
+            getActivity().getSupportFragmentManager().popBackStack();
+        }
+
+    }
+
+    void saveProduct() {
         String name = editName.getText().toString();
         String brand = editBrand.getText().toString();
         int quantity = Integer.parseInt(editQuantity.getText().toString());
         String color = spinnerColor.getSelectedItem().toString();
         String type = spinnerType.getSelectedItem().toString();
         int price = Integer.parseInt(editPrice.getText().toString());
-        String idUser = user.getId();
-        DatabaseReference data = FirebaseDatabase.getInstance().getReference("Product");
-        id = data.push().getKey();
-        Product product = new Product(id, idUser, name, brand, quantity, color, type, price);
-        data.child(id).setValue(product);
-
+        if (name.isEmpty()) {
+            Toast.makeText(getContext(), "Please input name", Toast.LENGTH_LONG).show();
+        } else if (brand.isEmpty()) {
+            Toast.makeText(getContext(), "Please input quantity", Toast.LENGTH_LONG).show();
+        } else if (String.valueOf(quantity).isEmpty()) {
+            Toast.makeText(getContext(), "Please input quantity", Toast.LENGTH_LONG).show();
+        } else if (listImageBitmap.size() == 0) {
+            Toast.makeText(getContext(), "Please select image", Toast.LENGTH_LONG).show();
+        } else if (String.valueOf(price).isEmpty()) {
+            Toast.makeText(getContext(), "Please input price", Toast.LENGTH_LONG).show();
+        } else {
+            DatabaseReference data = FirebaseDatabase.getInstance().getReference("Product");
+            if (EditImageAdapter.deletedMainImage && listImageUrl.size() > 0) {
+                data.child(id).child("mainImage").setValue(listImageUrl.get(0));
+            }
+            String idUser = user.getId();
+            Map<String, Object> newValue = new HashMap<>();
+            newValue.put(Constants.PRODUCT_NAME, name);
+            newValue.put(Constants.PRODUCT_BRAND, brand);
+            newValue.put(Constants.PRODUCT_QUANTITY, quantity);
+            newValue.put(Constants.PRODUCT_COLOR, color);
+            newValue.put(Constants.PRODUCT_TYPE, type);
+            newValue.put(Constants.PRODUCT_PRICE, price);
+            data.child(id).updateChildren(newValue);
+            newProduct = new Product(id, idUser, name, brand, quantity, color, type, price);
+            newProduct.setMainImage(product.getMainImage());
+            updateImage();
+        }
     }
 
-    void storeImage() {
-        StorageReference storageRef = FirebaseStorage.getInstance().getReference().child("ImageFolder");
-        for (int i = 0; i < listImage.size(); i++) {
-            final Uri imageUri = listImage.get(i);
-            final StorageReference imageName = storageRef.child("image" + imageUri.getLastPathSegment());
-            imageName.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    imageName.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                        @Override
-                        public void onSuccess(Uri uri) {
-                            DatabaseReference data = FirebaseDatabase.getInstance().getReference("Product");
-                            String imageUrl = String.valueOf(uri);
-                            if (firstImage) {
-                                data.child(id).child("mainImage").setValue(imageUrl);
-                                firstImage = false;
-                            }
-                            data.child(id).child("listImage").push().child("imageUrl").setValue(imageUrl);
-                            listImageUrl.add(imageUrl);
-                            FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-                            transaction.replace(R.id.root_add_fragment, new StallFragment());
-                            transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-                            transaction.commit();
-                        }
-                    });
+    public static void addDeletedImage(int position) {
+        listImageDelete.add(listImageUrl.get(position));
+        listImageUrl.remove(position);
+    }
+
+    class ConvertUrlToUri extends AsyncTask<ArrayList<String>, Void, ArrayList<Bitmap>> {
+        ArrayList<Bitmap> listBitmap = new ArrayList<>();
+
+        @Override
+        protected ArrayList<Bitmap> doInBackground(ArrayList<String>... arrayLists) {
+            ArrayList<String> list = arrayLists[0];
+            for (String url : list) {
+                Bitmap bitmap;
+                InputStream inputStream = null;
+                try {
+                    inputStream = new URL(url).openStream();
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
-            });
+                bitmap = BitmapFactory.decodeStream(inputStream);
+                listBitmap.add(bitmap);
+            }
+            return listBitmap;
+        }
+
+        @Override
+        protected void onPostExecute(ArrayList<Bitmap> bitmaps) {
+            super.onPostExecute(bitmaps);
+            listImageBitmap = bitmaps;
+            firstSize = listBitmap.size();
+            StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL);
+            recyclerViewImage.setLayoutManager(layoutManager);
+            adapter = new EditImageAdapter(listImageBitmap);
+            recyclerViewImage.setAdapter(adapter);
         }
     }
 }

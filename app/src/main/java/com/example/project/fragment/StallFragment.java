@@ -15,10 +15,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.denzcoskun.imageslider.constants.ScaleTypes;
+import com.denzcoskun.imageslider.models.SlideModel;
 import com.example.project.R;
 import com.example.project.activity.MainActivity;
 import com.example.project.adapter.MyProductAdapter;
 import com.example.project.common.Constants;
+import com.example.project.model.GetUrl;
 import com.example.project.model.Product;
 import com.example.project.model.User;
 import com.google.firebase.database.ChildEventListener;
@@ -36,6 +39,7 @@ public class StallFragment extends Fragment {
     Button btnAddItem;
     RecyclerView recyclerView;
     ArrayList<Product> listProducts = new ArrayList<>();
+
     User user;
     MyProductAdapter adapter;
 
@@ -89,13 +93,23 @@ public class StallFragment extends Fragment {
         MainActivity activity = (MainActivity) getActivity();
         user = activity.getUser();
         listProducts.clear();
-        DatabaseReference data = FirebaseDatabase.getInstance().getReference("Product");
-
-        Log.d("AA", user.getId());
+        final DatabaseReference data = FirebaseDatabase.getInstance().getReference("Product");
         data.orderByChild(Constants.USER_ID).equalTo(user.getId()).addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                 Product product = snapshot.getValue(Product.class);
+                ArrayList<String> listImagesUrl = new ArrayList<>();
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                    if (dataSnapshot.getKey().equals(Constants.LIST_IMAGES)) {
+                        for (DataSnapshot dataGetImage : dataSnapshot.getChildren()) {
+                            for (DataSnapshot dataGetImageUrl : dataGetImage.getChildren()) {
+                                String imageUrl = dataGetImageUrl.getValue(String.class);
+                                listImagesUrl.add(imageUrl);
+                            }
+                        }
+                    }
+                }
+                product.setImages(listImagesUrl);
                 listProducts.add(product);
                 adapter.notifyDataSetChanged();
             }

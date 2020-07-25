@@ -14,9 +14,8 @@
         android:layout_marginTop="40dp"
         app:iss_auto_cycle="true"
         app:iss_delay="0"
-        app:iss_period="2000"
+        app:iss_period="1500"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
