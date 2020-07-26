@@ -6,11 +6,13 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Binder;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
@@ -149,6 +151,7 @@ public class CartFragment extends Fragment {
                         String status = "paid";
                         dialog.dismiss();
                         updateOrder(orderList, address, status);
+                        reloadFragment();
                     }
                 });
 
@@ -210,5 +213,13 @@ public class CartFragment extends Fragment {
         } else {
             Toast.makeText(context, "You're not enough money to buy products", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    public void reloadFragment() {
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        if (Build.VERSION.SDK_INT >= 26) {
+            ft.setReorderingAllowed(false);
+        }
+        ft.detach(this).attach(this).commit();
     }
 }
