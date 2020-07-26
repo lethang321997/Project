@@ -72,7 +72,6 @@ public class SellingManagerFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        initData();
         initWidget();
         initView();
         initData();
