@@ -72,7 +72,6 @@ public class SignUpActivity extends AppCompatActivity {
     DatePicker datePicker;
     RadioButton radioMale;
     RadioButton radioFemale;
-    ProgressBar progressBar;
     RequestQueue mQueue;
     ArrayList<Province> listProvince = new ArrayList<>();
     ArrayList<District> listDistrict = new ArrayList<>();
@@ -103,7 +102,6 @@ public class SignUpActivity extends AppCompatActivity {
         registerDOB = findViewById(R.id.registerDOB);
         radioFemale = findViewById(R.id.radioFemale);
         radioMale = findViewById(R.id.radioMale);
-        progressBar = findViewById(R.id.progressBar);
     }
 
 
@@ -388,7 +386,6 @@ public class SignUpActivity extends AppCompatActivity {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     if (task.isSuccessful()) {
-                        progressBar.setVisibility(View.VISIBLE);
                         FirebaseUser getUser = FirebaseAuth.getInstance().getCurrentUser();
                         assert getUser != null;
                         String id = getUser.getUid();
@@ -398,7 +395,6 @@ public class SignUpActivity extends AppCompatActivity {
                         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                         intent.putExtra(Constants.USER, user);
                         startActivity(intent);
-                        progressBar.setVisibility(View.GONE);
                     } else {
                         Toast.makeText(getApplicationContext(), "Email already exists", Toast.LENGTH_SHORT).show();
                     }

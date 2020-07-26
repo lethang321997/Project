@@ -381,19 +381,19 @@ public class EditProductFragment extends Fragment {
     void saveProduct() {
         String name = editName.getText().toString();
         String brand = editBrand.getText().toString();
-        int quantity = Integer.parseInt(editQuantity.getText().toString());
+        String quantity = editQuantity.getText().toString();
         String color = spinnerColor.getSelectedItem().toString();
         String type = spinnerType.getSelectedItem().toString();
-        int price = Integer.parseInt(editPrice.getText().toString());
+        String price = editPrice.getText().toString();
         if (name.isEmpty()) {
             Toast.makeText(getContext(), "Please input name", Toast.LENGTH_LONG).show();
         } else if (brand.isEmpty()) {
-            Toast.makeText(getContext(), "Please input quantity", Toast.LENGTH_LONG).show();
-        } else if (String.valueOf(quantity).isEmpty()) {
+            Toast.makeText(getContext(), "Please input brand", Toast.LENGTH_LONG).show();
+        } else if (quantity.isEmpty()) {
             Toast.makeText(getContext(), "Please input quantity", Toast.LENGTH_LONG).show();
         } else if (listImageBitmap.size() == 0) {
             Toast.makeText(getContext(), "Please select image", Toast.LENGTH_LONG).show();
-        } else if (String.valueOf(price).isEmpty()) {
+        } else if (price.isEmpty()) {
             Toast.makeText(getContext(), "Please input price", Toast.LENGTH_LONG).show();
         } else {
             DatabaseReference data = FirebaseDatabase.getInstance().getReference("Product");
@@ -404,12 +404,12 @@ public class EditProductFragment extends Fragment {
             Map<String, Object> newValue = new HashMap<>();
             newValue.put(Constants.PRODUCT_NAME, name);
             newValue.put(Constants.PRODUCT_BRAND, brand);
-            newValue.put(Constants.PRODUCT_QUANTITY, quantity);
+            newValue.put(Constants.PRODUCT_QUANTITY, Integer.parseInt(quantity));
             newValue.put(Constants.PRODUCT_COLOR, color);
             newValue.put(Constants.PRODUCT_TYPE, type);
-            newValue.put(Constants.PRODUCT_PRICE, price);
+            newValue.put(Constants.PRODUCT_PRICE, Integer.parseInt(price));
             data.child(id).updateChildren(newValue);
-            newProduct = new Product(id, idUser, name, brand, quantity, color, type, price);
+            newProduct = new Product(id, idUser, name, brand, Integer.parseInt(quantity), color, type, Integer.parseInt(price));
             newProduct.setMainImage(product.getMainImage());
             updateImage();
         }

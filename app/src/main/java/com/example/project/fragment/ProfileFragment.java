@@ -7,6 +7,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -61,6 +62,7 @@ public class ProfileFragment extends Fragment {
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
         super.onViewCreated(view, savedInstanceState);
         btnCash = view.findViewById(R.id.btnInsertCash);
+        btn_manageSelling = view.findViewById(R.id.btnSellingHistory);
         imageProfile = view.findViewById(R.id.imageProfile);
         textName = view.findViewById(R.id.txtName);
         textCash = view.findViewById(R.id.txtCash);
@@ -89,6 +91,19 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 insertCash(v);
+            }
+        });
+
+        //Manage selling
+        btn_manageSelling.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Fragment fragment = SellingManagerFragment.newInstance(loginedUser.getId());
+                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                transaction.replace(R.id.root_profile_fragment, fragment);
+                transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+                transaction.addToBackStack(null);
+                transaction.commit();
             }
         });
 
