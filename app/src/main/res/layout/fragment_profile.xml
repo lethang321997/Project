@@ -80,7 +80,7 @@
             app:layout_constraintTop_toTopOf="@+id/guideline5" />
 
         <Button
-            android:id="@+id/btnOrderHistory"
+            android:id="@+id/btnBuyingHistory"
             android:layout_width="300dp"
             android:layout_height="40dp"
             android:layout_marginTop="10dp"
@@ -116,14 +116,14 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.522"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btnOrderHistory" />
+            app:layout_constraintTop_toBottomOf="@+id/btnBuyingHistory" />
 
         <Button
             android:id="@+id/btnLogout"
             android:layout_width="300dp"
             android:layout_height="40dp"
             android:layout_marginTop="10dp"
-            android:background="@drawable/button"
+            android:background="@drawable/button_red"
             android:text="@string/logout"
             android:textAllCaps="false"
             app:layout_constraintEnd_toEndOf="parent"
