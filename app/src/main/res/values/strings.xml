@@ -72,6 +72,8 @@
     <string name="x">x</string>
     <string name="search">Search</string>
     <string name="search_products">Search products</string>
+    <string name="sold_product">Sold Product</string>
+    <string name="my_products">My Products</string>
     <string-array name="product_type">
         <item>Accessories</item>
         <item>Bag</item>

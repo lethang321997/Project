@@ -14,6 +14,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,6 +30,7 @@ import com.example.project.adapter.ListOrderedProductAdapter;
 import com.example.project.common.Constants;
 import com.example.project.model.Order;
 import com.example.project.model.Product;
+import com.example.project.model.SoldProduct;
 import com.example.project.model.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -149,6 +151,7 @@ public class CartFragment extends Fragment {
                         String status = "paid";
                         dialog.dismiss();
                         updateOrder(orderList, address, status);
+                        addSoldProduct(orderList);
                     }
                 });
 
@@ -210,5 +213,36 @@ public class CartFragment extends Fragment {
         } else {
             Toast.makeText(context, "You're not enough money to buy products", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    void addSoldProduct(List<Order> orderList) {
+        for (Order order : orderList) {
+            DatabaseReference data = FirebaseDatabase.getInstance().getReference("Product");
+            final String idProduct = order.getProductId();
+            final String idBuyer = order.getUserId();
+            final int quantity = order.getOrderedQuantity();
+            final int price = order.getOrderedPrice();
+            data.child(idProduct).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    DatabaseReference dataRef = FirebaseDatabase.getInstance().getReference("SoldProduct");
+                    Product product = snapshot.getValue(Product.class);
+                    String idSeller = product.getIdUser();
+                    String productName = product.getName();
+                    String image = product.getMainImage();
+                    String id = dataRef.push().getKey();
+                    SoldProduct soldProduct = new SoldProduct(id, idProduct, productName, idSeller, idBuyer, quantity, price, image);
+                    dataRef.child(id).setValue(soldProduct);
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+
+
+        }
+
     }
 }

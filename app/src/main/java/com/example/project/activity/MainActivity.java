@@ -16,6 +16,7 @@ import com.example.project.fragment.RootAddFragment;
 import com.example.project.fragment.CartFragment;
 import com.example.project.fragment.HomeFragment;
 import com.example.project.fragment.ProfileFragment;
+import com.example.project.fragment.RootProfileFragment;
 import com.example.project.model.User;
 import com.google.android.material.tabs.TabLayout;
 
@@ -48,15 +49,16 @@ public class MainActivity extends AppCompatActivity {
         adapter.addFragment(new HomeFragment(), "Home");
         adapter.addFragment(new CartFragment(), "Cart");
         adapter.addFragment(new RootAddFragment(), "Stall");
-        adapter.addFragment(new ProfileFragment(), "Profile");
+        adapter.addFragment(new RootProfileFragment(), "Profile");
         viewPager.setAdapter(adapter);
         tabLayout.setupWithViewPager(viewPager);
         tabLayout.getTabAt(0).setIcon(R.drawable.ic_home_tab);
         tabLayout.getTabAt(1).setIcon(R.drawable.ic_cart_tab);
-        tabLayout.getTabAt(2).setIcon(R.drawable.ic_add_tab);
+        tabLayout.getTabAt(2).setIcon(R.drawable.stall);
         tabLayout.getTabAt(3).setIcon(R.drawable.ic_profile_tab);
         final int tabIconColor = ContextCompat.getColor(getApplicationContext(), R.color.tabSelected);
         final int tabUnselectIcon = ContextCompat.getColor(getApplicationContext(), R.color.tabUnselected);
+        tabLayout.getTabAt(2).getIcon().setColorFilter(tabUnselectIcon, PorterDuff.Mode.SRC_IN);
         tabLayout.getTabAt(0).getIcon().setColorFilter(tabIconColor, PorterDuff.Mode.SRC_IN);
         tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
