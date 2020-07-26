@@ -133,17 +133,17 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="18sp"
-                app:layout_constraintStart_toEndOf="@+id/btnPlus_productDetail"
+                app:layout_constraintStart_toEndOf="@+id/btnMinus_productDetail"
                 app:layout_constraintTop_toTopOf="@+id/textView40" />
 
             <TextView
                 android:id="@+id/txtProductQuantity_productDetail"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
+                android:layout_marginLeft="3dp"
                 android:textSize="14sp"
                 app:layout_constraintBottom_toBottomOf="@+id/textView40"
-                app:layout_constraintStart_toEndOf="@+id/btnMinus_productDetail"
+                app:layout_constraintStart_toEndOf="@+id/btnPlus_productDetail"
                 app:layout_constraintTop_toTopOf="@+id/textView40"
                 app:layout_constraintVertical_bias="1.0" />
 
@@ -151,11 +151,10 @@
                 android:id="@+id/btnPlus_productDetail"
                 android:layout_width="35dp"
                 android:layout_height="35dp"
-                android:layout_marginLeft="3dp"
                 android:text="+"
                 android:textColor="@color/colorBackgroundTabLayout"
                 app:layout_constraintBottom_toBottomOf="@+id/textView40"
-                app:layout_constraintStart_toEndOf="@+id/textView40"
+                app:layout_constraintStart_toEndOf="@+id/txtCurrentQuantity_productDetail"
                 app:layout_constraintTop_toTopOf="@+id/textView40"
                 app:layout_constraintVertical_bias="0.538" />
 
@@ -163,10 +162,11 @@
                 android:id="@+id/btnMinus_productDetail"
                 android:layout_width="35dp"
                 android:layout_height="35dp"
+                android:layout_marginLeft="5dp"
                 android:text="-"
                 android:textColor="@color/colorBackgroundTabLayout"
                 app:layout_constraintBottom_toBottomOf="@+id/textView40"
-                app:layout_constraintStart_toEndOf="@+id/txtCurrentQuantity_productDetail"
+                app:layout_constraintStart_toEndOf="@+id/textView40"
                 app:layout_constraintTop_toTopOf="@+id/textView40"
                 app:layout_constraintVertical_bias="0.538" />
 

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Project</string>
+    <string name="app_name">Shoputaba</string>
     <string name="input_email">Input Email</string>
     <string name="input_password">Input Password</string>
     <string name="login">Login</string>

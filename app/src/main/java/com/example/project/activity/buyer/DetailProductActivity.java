@@ -203,7 +203,6 @@ public class DetailProductActivity extends AppCompatActivity {
             public void onClick(View v) {
                 addToCart(v);
                 final TabLayout tabLayout = MainActivity.tabLayout;
-                final ViewPager viewPager = MainActivity.viewPager;
                 TabLayout.Tab tab = tabLayout.getTabAt(1);
                 tab.select();
             }
@@ -224,10 +223,6 @@ public class DetailProductActivity extends AppCompatActivity {
 
     public void addToCart(View v) {
         insertOrderToDatabase(v, "confirming");
-    }
-
-    public void buyNow() {
-
     }
 
     public void insertOrderToDatabase(final View v, String status) {
