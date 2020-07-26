@@ -37,6 +37,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -152,53 +153,64 @@ public class HomeFragment extends Fragment {
     }
 
     void initData() {
-        MainActivity mainActivity = (MainActivity) getActivity();
-        final User user = mainActivity.getUser();
-        txtMoney.setText(String.format("%,d", user.getMoney()) + " VND ");
-        final ListProductAdapter listProductAdapter = new ListProductAdapter(productList, getActivity());
-        StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager(2,
-                StaggeredGridLayoutManager.VERTICAL);
-        recyclerView.setLayoutManager(staggeredGridLayoutManager);
-        recyclerView.setAdapter(listProductAdapter);
         final DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
-        databaseReference.child("Product").addChildEventListener(new ChildEventListener() {
+        final User[] user = {MainActivity.user};
+        databaseReference.child("User").child(user[0].getId()).addValueEventListener(new ValueEventListener() {
             @Override
-            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-                Product product = snapshot.getValue(Product.class);
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                user[0] = snapshot.getValue(User.class);
 
-                if (!product.getIdUser().equals(user.getId())) {
-                    //get list Image's url
-                    ArrayList<String> listImageUrl = null;
-                    for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                        if (dataSnapshot.getKey().equals("listImage")) {
-                            listImageUrl = new ArrayList<>();
-                            for (DataSnapshot dataSnapshot_image : dataSnapshot.getChildren()) {
-                                for (DataSnapshot dataSnapshot_imageUrl : dataSnapshot_image.getChildren()) {
-                                    String imageUrl = dataSnapshot_imageUrl.getValue(String.class);
-                                    listImageUrl.add(imageUrl);
+                txtMoney.setText(String.format("%,d", user[0].getMoney()) + " VND ");
+                final ListProductAdapter listProductAdapter = new ListProductAdapter(productList, getActivity());
+                StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager(2,
+                        StaggeredGridLayoutManager.VERTICAL);
+                recyclerView.setLayoutManager(staggeredGridLayoutManager);
+                recyclerView.setAdapter(listProductAdapter);
+                databaseReference.child("Product").addChildEventListener(new ChildEventListener() {
+                    @Override
+                    public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                        Product product = snapshot.getValue(Product.class);
+
+                        if (!product.getIdUser().equals(user[0].getId())) {
+                            //get list Image's url
+                            ArrayList<String> listImageUrl = null;
+                            for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                                if (dataSnapshot.getKey().equals("listImage")) {
+                                    listImageUrl = new ArrayList<>();
+                                    for (DataSnapshot dataSnapshot_image : dataSnapshot.getChildren()) {
+                                        for (DataSnapshot dataSnapshot_imageUrl : dataSnapshot_image.getChildren()) {
+                                            String imageUrl = dataSnapshot_imageUrl.getValue(String.class);
+                                            listImageUrl.add(imageUrl);
+                                        }
+                                    }
                                 }
                             }
+                            product.setImages(listImageUrl);
+                            productList.add(product);
+                            listProductAdapter.notifyDataSetChanged();
                         }
                     }
-                    product.setImages(listImageUrl);
-                    productList.add(product);
-                    listProductAdapter.notifyDataSetChanged();
-                }
-            }
 
-            @Override
-            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                    @Override
+                    public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
 
-            }
+                    }
 
-            @Override
-            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+                    @Override
+                    public void onChildRemoved(@NonNull DataSnapshot snapshot) {
 
-            }
+                    }
 
-            @Override
-            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                    @Override
+                    public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
 
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
             }
 
             @Override

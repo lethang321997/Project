@@ -24,8 +24,11 @@ import com.example.project.activity.MainActivity;
 import com.example.project.activity.buyer.ViewProfileActivity;
 import com.example.project.model.Order;
 import com.example.project.model.User;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 
 import java.util.HashMap;
@@ -39,8 +42,8 @@ public class ProfileFragment extends Fragment {
         // Required empty public constructor
     }
 
-    private Button btnCash;
     private Button btn_manageSelling;
+    private Button btnCash;
     private ImageView imageProfile;
     private TextView textName;
     private TextView textCash;
@@ -57,6 +60,7 @@ public class ProfileFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
         super.onViewCreated(view, savedInstanceState);
         btnCash = view.findViewById(R.id.btnInsertCash);
         btn_manageSelling = view.findViewById(R.id.btnSellingHistory);
@@ -67,12 +71,21 @@ public class ProfileFragment extends Fragment {
         btnLogout = view.findViewById(R.id.btnLogout);
 
         //get logined user
-        MainActivity mainActivity = (MainActivity) getActivity();
-        loginedUser = mainActivity.getUser();
+        loginedUser = MainActivity.user;
+        databaseReference.child("User").child(loginedUser.getId()).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                loginedUser = snapshot.getValue(User.class);
+                textName.setText(loginedUser.getName());
+                textCash.setText(String.format("%,d", loginedUser.getMoney()) + " VND ");
+            }
 
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
         Glide.with(this).load(loginedUser.getImageUrl()).into(imageProfile);
-        textName.setText(loginedUser.getName());
-        textCash.setText(String.format("%,d", loginedUser.getMoney()) + " VND ");
 
         //Cash
         btnCash.setOnClickListener(new View.OnClickListener() {
@@ -130,11 +143,15 @@ public class ProfileFragment extends Fragment {
         btnConfirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String cash = txtCash.getText().toString();
-                String userId = loginedUser.getId();
-                insertCashToDatabase(userId, cash);
-                Toast.makeText(v.getContext(), "Insert cash successfully", Toast.LENGTH_SHORT).show();
-                dialog.cancel();
+                if (!txtCash.getText().toString().equals("")) {
+                    String cash = txtCash.getText().toString();
+                    String userId = loginedUser.getId();
+                    insertCashToDatabase(userId, cash);
+                    Toast.makeText(v.getContext(), "Insert cash successfully.", Toast.LENGTH_SHORT).show();
+                    dialog.dismiss();
+                } else {
+                    Toast.makeText(v.getContext(), "Wrong input type of number.", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -142,7 +159,7 @@ public class ProfileFragment extends Fragment {
         btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dialog.cancel();
+                dialog.dismiss();
             }
         });
     }
