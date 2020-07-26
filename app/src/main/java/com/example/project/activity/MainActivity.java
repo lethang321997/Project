@@ -79,9 +79,4 @@ public class MainActivity extends AppCompatActivity {
     public User getUser() {
         return user;
     }
-
-    public void logOut() {
-        user = null;
-        finish();
-    }
 }

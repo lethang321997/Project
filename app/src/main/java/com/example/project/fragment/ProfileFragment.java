@@ -71,7 +71,7 @@ public class ProfileFragment extends Fragment {
 
         Glide.with(this).load(loginedUser.getImageUrl()).into(imageProfile);
         textName.setText(loginedUser.getName());
-        textCash.setText(String.format("%,d",loginedUser.getMoney())+ " VND ");
+        textCash.setText(String.format("%,d", loginedUser.getMoney()) + " VND ");
 
         //Cash
         btnCash.setOnClickListener(new View.OnClickListener() {
@@ -102,8 +102,7 @@ public class ProfileFragment extends Fragment {
         btnLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MainActivity mainActivity = (MainActivity) getActivity();
-                mainActivity.logOut();
+                getActivity().finish();
             }
         });
     }
@@ -142,7 +141,7 @@ public class ProfileFragment extends Fragment {
         });
     }
 
-    public void insertCashToDatabase(String userId ,String cash) {
+    public void insertCashToDatabase(String userId, String cash) {
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
         int updatedCash = loginedUser.getMoney() + Integer.parseInt(cash);
         databaseReference.child("User").child(userId).child("money").setValue(updatedCash);

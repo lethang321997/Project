@@ -1,6 +1,7 @@
 package com.example.project.fragment;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -52,6 +53,7 @@ public class CartFragment extends Fragment {
     private Button btnBuyNow;
     User user;
     int totalPrice = 0;
+    Context context;
 
     public CartFragment() {
         // Required empty public constructor
@@ -70,6 +72,7 @@ public class CartFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         MainActivity mainActivity = (MainActivity) getActivity();
         user = mainActivity.getUser();
+        context = this.getContext();
 
         recyclerView = view.findViewById(R.id.recyclerView_orderedProduct);
         txtTotalPrice = view.findViewById(R.id.txtTotalPrice_orderedProduct);
@@ -105,7 +108,6 @@ public class CartFragment extends Fragment {
 
             @Override
             public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-
             }
 
             @Override
@@ -132,9 +134,8 @@ public class CartFragment extends Fragment {
 
             @Override
             public void onClick(View v) {
-                final Dialog dialog = new Dialog(v.getContext());
+                final Dialog dialog = new Dialog(context);
                 dialog.setContentView(R.layout.dialog_insert_address);
-                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                 txtAddress = dialog.findViewById(R.id.txtAddress_orderedProduct);
                 btnConfirm = dialog.findViewById(R.id.btnConfirmAddress_orderedProduct);
                 btnCancel = dialog.findViewById(R.id.btnCancelAddress_orderedProduct);
@@ -146,15 +147,15 @@ public class CartFragment extends Fragment {
                         //Update address and status
                         String address = txtAddress.getText().toString();
                         String status = "paid";
-                        updateOrder(v, orderList, address, status);
-                        dialog.cancel();
+                        dialog.dismiss();
+                        updateOrder(orderList, address, status);
                     }
                 });
 
                 btnCancel.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        dialog.cancel();
+                        dialog.dismiss();
                     }
                 });
                 dialog.show();
@@ -162,7 +163,7 @@ public class CartFragment extends Fragment {
         });
     }
 
-    public void updateOrder(View v, List<Order> orderList, String address, String status) {
+    public void updateOrder(List<Order> orderList, String address, String status) {
         //check money
         if (user.getMoney() >= totalPrice) {
             final DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
@@ -171,7 +172,7 @@ public class CartFragment extends Fragment {
                 databaseReference.child("Order").child(indexOrder.getId()).child("orderedAddress").setValue(address);
                 databaseReference.child("Order").child(indexOrder.getId()).child("status").setValue(status);
                 //update seller's money
-                databaseReference.child("Product").child(indexOrder.getProductId()).addValueEventListener(new ValueEventListener() {
+                databaseReference.child("Product").child(indexOrder.getProductId()).addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         final Product product = snapshot.getValue(Product.class);
@@ -205,9 +206,9 @@ public class CartFragment extends Fragment {
             int userMoney = user.getMoney();
             int updatedMoney = userMoney - totalPrice;
             databaseReference.child("User").child(user.getId()).child("money").setValue(updatedMoney);
-            Toast.makeText(v.getContext(), "Buy products successfully! Thank you!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "Buy products successfully! Thank you!", Toast.LENGTH_SHORT).show();
         } else {
-            Toast.makeText(v.getContext(), "You're not enough money to buy products", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "You're not enough money to buy products", Toast.LENGTH_SHORT).show();
         }
     }
 }

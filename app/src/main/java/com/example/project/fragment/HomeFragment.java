@@ -104,26 +104,7 @@ public class HomeFragment extends Fragment {
 
             @Override
             public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-                Product product = snapshot.getValue(Product.class);
 
-                if (!product.getIdUser().equals(user.getId())) {
-                    //get list Image's url
-                    ArrayList<String> listImageUrl = null;
-                    for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                        if (dataSnapshot.getKey().equals("listImage")) {
-                            listImageUrl = new ArrayList<>();
-                            for (DataSnapshot dataSnapshot_image : dataSnapshot.getChildren()) {
-                                for (DataSnapshot dataSnapshot_imageUrl : dataSnapshot_image.getChildren()) {
-                                    String imageUrl = dataSnapshot_imageUrl.getValue(String.class);
-                                    listImageUrl.add(imageUrl);
-                                }
-                            }
-                        }
-                    }
-                    product.setImages(listImageUrl);
-                    productList.add(product);
-                    listProductAdapter.notifyDataSetChanged();
-                }
             }
 
             @Override
