@@ -27,6 +27,7 @@
         android:layout_height="35dp"
         android:layout_marginLeft="5dp"
         android:background="@drawable/button"
+        android:foreground="?android:attr/selectableItemBackground"
         android:text="@string/search"
         android:textAllCaps="false"
         app:layout_constraintBottom_toBottomOf="@+id/txtSearch"

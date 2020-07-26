@@ -16,8 +16,10 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.Spinner;
@@ -49,6 +51,7 @@ public class HomeFragment extends Fragment {
     private TextView txtMoney;
     private EditText txtSearch;
     private Spinner spinner;
+    private Button btnSearch;
     DatabaseAdapter databaseAdapter = new DatabaseAdapter();
     boolean firstLoad = true;
 
@@ -80,6 +83,7 @@ public class HomeFragment extends Fragment {
         txtSearch = getView().findViewById(R.id.txtSearch);
         txtMoney = getView().findViewById(R.id.txtMoney_home);
         spinner = getView().findViewById(R.id.spinnerType);
+        btnSearch = getView().findViewById(R.id.btnSearch);
     }
 
     void initSpinner() {
@@ -125,6 +129,24 @@ public class HomeFragment extends Fragment {
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
 
+            }
+        });
+        btnSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String searchText = txtSearch.getText().toString().toLowerCase();
+                ArrayList<Product> searchList = new ArrayList<>();
+                ListProductAdapter listProductAdapter = new ListProductAdapter(searchList, getActivity());
+                StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager(2,
+                        StaggeredGridLayoutManager.VERTICAL);
+                recyclerView.setLayoutManager(staggeredGridLayoutManager);
+                recyclerView.setAdapter(listProductAdapter);
+                for (Product product : productList) {
+                    if (product.getName().toLowerCase().contains(searchText)) {
+                        searchList.add(product);
+                        listProductAdapter.notifyDataSetChanged();
+                    }
+                }
             }
         });
     }
