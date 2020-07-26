@@ -42,6 +42,7 @@ public class ProfileFragment extends Fragment {
         // Required empty public constructor
     }
 
+    private Button btn_manageSelling;
     private Button btnCash;
     private ImageView imageProfile;
     private TextView textName;
