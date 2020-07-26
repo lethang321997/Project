@@ -68,6 +68,10 @@
     <string name="edit">Edit</string>
     <string name="images">Images:</string>
     <string name="edit_product">Edit Product</string>
+    <string name="save">Save</string>
+    <string name="x">x</string>
+    <string name="search">Search</string>
+    <string name="search_products">Search products</string>
     <string-array name="product_type">
         <item>Accessories</item>
         <item>Bag</item>
@@ -75,10 +79,12 @@
         <item>Clothes</item>
         <item>Electronic Device</item>
         <item>Food</item>
+        <item>Watch</item>
         <item>Laptop</item>
         <item>Phone</item>
         <item>Shoe</item>
         <item>Toy</item>
+        <item>Technological</item>
         <item>Others</item>
     </string-array>
     <string-array name="colors">
