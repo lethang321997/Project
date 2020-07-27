@@ -72,7 +72,6 @@ public class HomeFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull final View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        productList = new ArrayList<>();
         initWidget();
         initSpinner();
         initAction();
@@ -153,13 +152,13 @@ public class HomeFragment extends Fragment {
     }
 
     void initData() {
+        productList = new ArrayList<>();
         final DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
         final User[] user = {MainActivity.user};
-        databaseReference.child("User").child(user[0].getId()).addValueEventListener(new ValueEventListener() {
+        databaseReference.child("User").orderByChild("id").equalTo(user[0].getId()).addChildEventListener(new ChildEventListener() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
+            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                 user[0] = snapshot.getValue(User.class);
-
                 txtMoney.setText(String.format("%,d", user[0].getMoney()) + " VND ");
                 final ListProductAdapter listProductAdapter = new ListProductAdapter(productList, getActivity());
                 StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager(2,
@@ -193,7 +192,27 @@ public class HomeFragment extends Fragment {
 
                     @Override
                     public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                        productList.clear();
+                        Product product = snapshot.getValue(Product.class);
 
+                        if (!product.getIdUser().equals(user[0].getId())) {
+                            //get list Image's url
+                            ArrayList<String> listImageUrl = null;
+                            for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                                if (dataSnapshot.getKey().equals("listImage")) {
+                                    listImageUrl = new ArrayList<>();
+                                    for (DataSnapshot dataSnapshot_image : dataSnapshot.getChildren()) {
+                                        for (DataSnapshot dataSnapshot_imageUrl : dataSnapshot_image.getChildren()) {
+                                            String imageUrl = dataSnapshot_imageUrl.getValue(String.class);
+                                            listImageUrl.add(imageUrl);
+                                        }
+                                    }
+                                }
+                            }
+                            product.setImages(listImageUrl);
+                            productList.add(product);
+                            listProductAdapter.notifyDataSetChanged();
+                        }
                     }
 
                     @Override
@@ -211,6 +230,21 @@ public class HomeFragment extends Fragment {
 
                     }
                 });
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
             }
 
             @Override
