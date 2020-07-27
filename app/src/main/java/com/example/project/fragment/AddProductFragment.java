@@ -56,6 +56,7 @@ import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Objects;
 
 /**
@@ -315,7 +316,7 @@ public class AddProductFragment extends Fragment {
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
             bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
             byte[] data = outputStream.toByteArray();
-            final StorageReference imageName = storageRef.child("image" + bitmap.getGenerationId());
+            final StorageReference imageName = storageRef.child("image" + Calendar.getInstance().getTimeInMillis());
             final int count = i;
             imageName.putBytes(data).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override

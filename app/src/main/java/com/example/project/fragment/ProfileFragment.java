@@ -24,6 +24,13 @@ import com.example.project.activity.MainActivity;
 import com.example.project.activity.buyer.ViewProfileActivity;
 import com.example.project.model.Order;
 import com.example.project.model.User;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.EmailAuthCredential;
+import com.google.firebase.auth.EmailAuthProvider;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -50,6 +57,12 @@ public class ProfileFragment extends Fragment {
     private TextView textCash;
     private Button btnBrief;
     private Button btnLogout;
+    private Button btnChangePassword;
+    private EditText editOldPass;
+    private EditText editNewPass;
+    private EditText editRePass;
+    private Button btnCancel;
+    private Button btnSave;
     User loginedUser;
 
     @Override
@@ -65,13 +78,13 @@ public class ProfileFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         btnCash = view.findViewById(R.id.btnInsertCash);
         btn_manageSelling = view.findViewById(R.id.btnSellingHistory);
-        btnBuyingHistory = view.findViewById(R.id.btnBuyingHistory);
+        btnBuyingHistory = view.findViewById(R.id.btnOrderHistory);
         imageProfile = view.findViewById(R.id.imageProfile);
         textName = view.findViewById(R.id.txtName);
         textCash = view.findViewById(R.id.txtCash);
         btnBrief = view.findViewById(R.id.btnBrief);
         btnLogout = view.findViewById(R.id.btnLogout);
-
+        btnChangePassword = view.findViewById(R.id.btnChangePassword);
         //get logined user
         loginedUser = MainActivity.user;
         databaseReference.child("User").child(loginedUser.getId()).addValueEventListener(new ValueEventListener() {
@@ -139,6 +152,76 @@ public class ProfileFragment extends Fragment {
                 getActivity().finish();
             }
         });
+
+        btnChangePassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                changePassword();
+            }
+        });
+    }
+
+    void changePassword() {
+        final Dialog dialog = new Dialog(getContext());
+        dialog.setContentView(R.layout.dialog_change_password);
+        editNewPass = dialog.findViewById(R.id.editNewPass);
+        editOldPass = dialog.findViewById(R.id.editOldPassword);
+        editRePass = dialog.findViewById(R.id.editRePass);
+        btnSave = dialog.findViewById(R.id.btnSave);
+        btnCancel = dialog.findViewById(R.id.btnCancel);
+        btnCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+        btnSave.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String oldPass = editOldPass.getText().toString();
+                final String newPass = editNewPass.getText().toString();
+                String rePass = editRePass.getText().toString();
+                if (oldPass.isEmpty()) {
+                    Toast.makeText(getContext(), "Please input old password", Toast.LENGTH_LONG).show();
+                } else if (newPass.isEmpty()) {
+                    Toast.makeText(getContext(), "Please input new password", Toast.LENGTH_LONG).show();
+                } else if (rePass.isEmpty()) {
+                    Toast.makeText(getContext(), "Please re-input new password", Toast.LENGTH_LONG).show();
+                } else if (!oldPass.equals(loginedUser.getPassword())) {
+                    Toast.makeText(getContext(), "Please input exactly old password", Toast.LENGTH_LONG).show();
+                }else if (newPass.length() <6) {
+                    Toast.makeText(getContext(), "Please input password at least 6 characters", Toast.LENGTH_LONG).show();
+                } else if (!newPass.equals(rePass)) {
+                    Toast.makeText(getContext(), "Please input exactly re-password", Toast.LENGTH_LONG).show();
+                } else {
+                    final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                    AuthCredential credential = EmailAuthProvider.getCredential(loginedUser.getEmail(), oldPass);
+                    user.reauthenticate(credential).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (task.isSuccessful()) {
+                                user.updatePassword(newPass).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        if (task.isSuccessful()) {
+                                            DatabaseReference data = FirebaseDatabase.getInstance().getReference("User");
+                                            data.child(loginedUser.getId()).child("password").setValue(newPass);
+                                            Toast.makeText(getContext(), "Change password successful", Toast.LENGTH_SHORT).show();
+                                            dialog.dismiss();
+                                        } else {
+                                            Toast.makeText(getContext(), "Change password failed", Toast.LENGTH_SHORT).show();
+                                        }
+                                    }
+                                });
+                            } else {
+                                Toast.makeText(getContext(), "Change password failed", Toast.LENGTH_LONG).show();
+                            }
+                        }
+                    });
+                }
+            }
+        });
+        dialog.show();
     }
 
     public void insertCash(View v) {

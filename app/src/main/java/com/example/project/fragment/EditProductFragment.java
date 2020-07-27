@@ -63,6 +63,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -338,7 +339,7 @@ public class EditProductFragment extends Fragment {
                 ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
                 bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
                 byte[] dataImage = outputStream.toByteArray();
-                final StorageReference imageName = storageRef.child("image" + bitmap.getGenerationId());
+                final StorageReference imageName = storageRef.child("image" + Calendar.getInstance().getTimeInMillis());
                 final int count = i;
                 imageName.putBytes(dataImage).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                     @Override
