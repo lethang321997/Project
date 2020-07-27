@@ -261,9 +261,7 @@ public class AddProductFragment extends Fragment {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-
             }
-
         }
         if (requestCode == Constants.TAKE_PHOTO_CODE && resultCode == Activity.RESULT_OK) {
             Bundle extras = data.getExtras();

@@ -78,12 +78,22 @@ public class CartFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         MainActivity mainActivity = (MainActivity) getActivity();
         user = mainActivity.getUser();
-        context = this.getContext();
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
+        databaseReference.child("User").child(user.getId()).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                user = snapshot.getValue(User.class);
+            }
 
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+        context = this.getContext();
         recyclerView = view.findViewById(R.id.recyclerView_orderedProduct);
         txtTotalPrice = view.findViewById(R.id.txtTotalPrice_orderedProduct);
         btnBuyNow = view.findViewById(R.id.btnBuyNow_orderedProduct);
-
     }
 
     @Override
@@ -261,7 +271,6 @@ public class CartFragment extends Fragment {
                 }
             });
         }
-
     }
 
     public static void setTotalPrice() {

@@ -74,7 +74,7 @@ public class ListProductAdapter extends RecyclerView.Adapter<ListProductAdapter.
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        View view = inflater.inflate(R.layout.custom_layout_product_list,parent, false);
+        View view = inflater.inflate(R.layout.custom_layout_product_list, parent, false);
         RecyclerView.LayoutParams layoutParams = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
         view.setLayoutParams(layoutParams);
         return new ViewHolder(view);

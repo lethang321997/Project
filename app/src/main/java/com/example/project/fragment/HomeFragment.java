@@ -72,7 +72,6 @@ public class HomeFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull final View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        productList = new ArrayList<>();
         initWidget();
         initSpinner();
         initAction();
@@ -153,13 +152,13 @@ public class HomeFragment extends Fragment {
     }
 
     void initData() {
+        productList = new ArrayList<>();
         final DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
         final User[] user = {MainActivity.user};
-        databaseReference.child("User").child(user[0].getId()).addValueEventListener(new ValueEventListener() {
+        databaseReference.child("User").orderByChild("id").equalTo(user[0].getId()).addChildEventListener(new ChildEventListener() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
+            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                 user[0] = snapshot.getValue(User.class);
-
                 txtMoney.setText(String.format("%,d", user[0].getMoney()) + " VND ");
                 final ListProductAdapter listProductAdapter = new ListProductAdapter(productList, getActivity());
                 StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager(2,
@@ -211,6 +210,21 @@ public class HomeFragment extends Fragment {
 
                     }
                 });
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
             }
 
             @Override

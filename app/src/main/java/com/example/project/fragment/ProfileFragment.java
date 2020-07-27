@@ -106,6 +106,13 @@ public class ProfileFragment extends Fragment {
 
             }
         });
+        //Set image
+        if (!loginedUser.getImageUrl().equals("null")) {
+            Glide.with(view).load(loginedUser.getImageUrl()).into(imageProfile);
+        } else {
+            Glide.with(view).load(R.drawable.profile_image).into(imageProfile);
+        }
+
         //Cash
         btnCash.setOnClickListener(new View.OnClickListener() {
             @Override
