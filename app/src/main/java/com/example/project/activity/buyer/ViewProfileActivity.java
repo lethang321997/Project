@@ -35,6 +35,7 @@ import com.example.project.model.District;
 import com.example.project.model.Province;
 import com.example.project.model.User;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -45,7 +46,9 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.ByteArrayOutputStream;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 public class ViewProfileActivity extends AppCompatActivity {
 
@@ -98,9 +101,42 @@ public class ViewProfileActivity extends AppCompatActivity {
 
         //get logined User
         loginedUser = MainActivity.user;
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
+        databaseReference.child("User").equalTo(loginedUser.getId()).addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                loginedUser = snapshot.getValue(User.class);
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                loginedUser = snapshot.getValue(User.class);
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
 
         //set value of logined to textview and editview
-        Glide.with(this).load(loginedUser.getImageUrl()).into(imageProfile);
+        if (!loginedUser.getImageUrl().equals("null")) {
+            Glide.with(this).load(loginedUser.getImageUrl()).into(imageProfile);
+        } else {
+            Glide.with(this).load(R.drawable.profile_image).into(imageProfile);
+        }
+
         txtEmail.setText(loginedUser.getEmail());
         txtViewUserName.setText(loginedUser.getName());
         for (int i = 0; i < rdGender.getChildCount(); i++) {
@@ -201,15 +237,13 @@ public class ViewProfileActivity extends AppCompatActivity {
     }
 
     public void updateUser() {
-        if (imageUri != null) {
-            storeImage();
-        }
+        storeImage();
         DatabaseReference firebaseDatabase = FirebaseDatabase.getInstance().getReference();
         firebaseDatabase.child("User").child(loginedUser.getId()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 snapshot.getRef().child("name").setValue(txtViewUserName.getText().toString());
-                snapshot.getRef().child("gender").setValue(((RadioButton)findViewById(rdGender.getCheckedRadioButtonId())).getText().toString());
+                snapshot.getRef().child("gender").setValue(((RadioButton) findViewById(rdGender.getCheckedRadioButtonId())).getText().toString());
                 snapshot.getRef().child("dob").setValue(txtDob.getText().toString());
                 snapshot.getRef().child("phone").setValue(txtPhone.getText().toString());
                 snapshot.getRef().child("address").setValue(txtLocation.getText().toString());
@@ -224,8 +258,9 @@ public class ViewProfileActivity extends AppCompatActivity {
     }
 
     public void storeImage() {
+
         StorageReference storageReference = FirebaseStorage.getInstance().getReference().child("ImageFolder");
-        final StorageReference imageName = storageReference.child("image" + imageUri.getLastPathSegment());
+        final StorageReference imageName = storageReference.child("image" + Calendar.getInstance().getTimeInMillis());
         imageName.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
