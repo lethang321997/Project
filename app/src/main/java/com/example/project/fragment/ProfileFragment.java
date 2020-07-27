@@ -97,7 +97,7 @@ public class ProfileFragment extends Fragment {
                 if (!loginedUser.getImageUrl().equals("null")) {
                     Glide.with(view).load(loginedUser.getImageUrl()).into(imageProfile);
                 } else {
-                    Glide.with(view).load(R.drawable.profile_image).into(imageProfile);
+                    imageProfile.setImageResource(R.drawable.ic_profile_tab);
                 }
             }
 
@@ -193,7 +193,7 @@ public class ProfileFragment extends Fragment {
                     Toast.makeText(getContext(), "Please re-input new password", Toast.LENGTH_LONG).show();
                 } else if (!oldPass.equals(loginedUser.getPassword())) {
                     Toast.makeText(getContext(), "Please input exactly old password", Toast.LENGTH_LONG).show();
-                }else if (newPass.length() <6) {
+                } else if (newPass.length() < 6) {
                     Toast.makeText(getContext(), "Please input password at least 6 characters", Toast.LENGTH_LONG).show();
                 } else if (!newPass.equals(rePass)) {
                     Toast.makeText(getContext(), "Please input exactly re-password", Toast.LENGTH_LONG).show();
