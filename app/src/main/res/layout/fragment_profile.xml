@@ -59,6 +59,7 @@
             android:layout_height="25dp"
             android:layout_marginStart="8dp"
             android:background="@drawable/button_clone1"
+            android:foreground="?android:attr/selectableItemBackground"
             android:onClick="@string/insertCash"
             android:text="@string/InsertCash"
             android:textSize="12sp"
@@ -72,6 +73,7 @@
             android:layout_height="40dp"
             android:layout_marginTop="15dp"
             android:background="@drawable/button"
+            android:foreground="?android:attr/selectableItemBackground"
             android:text="@string/settingBriref"
             android:textAllCaps="false"
             app:layout_constraintEnd_toEndOf="parent"
@@ -80,11 +82,12 @@
             app:layout_constraintTop_toTopOf="@+id/guideline5" />
 
         <Button
-            android:id="@+id/btnBuyingHistory"
+            android:id="@+id/btnOrderHistory"
             android:layout_width="300dp"
             android:layout_height="40dp"
             android:layout_marginTop="10dp"
             android:background="@drawable/button"
+            android:foreground="?android:attr/selectableItemBackground"
             android:text="@string/orderHistory"
             android:textAllCaps="false"
             app:layout_constraintEnd_toEndOf="parent"
@@ -98,7 +101,8 @@
             android:layout_height="40dp"
             android:layout_marginTop="10dp"
             android:background="@drawable/button"
-            android:text="Selling History"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:text="@string/selling_history"
             android:textAllCaps="false"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.522"
@@ -111,19 +115,21 @@
             android:layout_height="40dp"
             android:layout_marginTop="10dp"
             android:background="@drawable/button"
+            android:foreground="?android:attr/selectableItemBackground"
             android:text="@string/changePassword"
             android:textAllCaps="false"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.522"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btnBuyingHistory" />
+            app:layout_constraintTop_toBottomOf="@+id/btnOrderHistory" />
 
         <Button
             android:id="@+id/btnLogout"
             android:layout_width="300dp"
             android:layout_height="40dp"
             android:layout_marginTop="10dp"
-            android:background="@drawable/button_red"
+            android:background="@drawable/button"
+            android:foreground="?android:attr/selectableItemBackground"
             android:text="@string/logout"
             android:textAllCaps="false"
             app:layout_constraintEnd_toEndOf="parent"
