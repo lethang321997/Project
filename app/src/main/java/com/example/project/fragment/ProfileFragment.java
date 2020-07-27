@@ -73,7 +73,7 @@ public class ProfileFragment extends Fragment {
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull final View view, @Nullable Bundle savedInstanceState) {
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
         super.onViewCreated(view, savedInstanceState);
         btnCash = view.findViewById(R.id.btnInsertCash);
@@ -93,6 +93,12 @@ public class ProfileFragment extends Fragment {
                 loginedUser = snapshot.getValue(User.class);
                 textName.setText(loginedUser.getName());
                 textCash.setText(String.format("%,d", loginedUser.getMoney()) + " VND ");
+                //Set image
+                if (!loginedUser.getImageUrl().equals("null")) {
+                    Glide.with(view).load(loginedUser.getImageUrl()).into(imageProfile);
+                } else {
+                    Glide.with(view).load(R.drawable.profile_image).into(imageProfile);
+                }
             }
 
             @Override
@@ -100,8 +106,6 @@ public class ProfileFragment extends Fragment {
 
             }
         });
-        Glide.with(this).load(loginedUser.getImageUrl()).into(imageProfile);
-
         //Cash
         btnCash.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -53,11 +53,13 @@ import java.util.List;
 public class CartFragment extends Fragment {
 
     private RecyclerView recyclerView;
-    private TextView txtTotalPrice;
+    private static TextView txtTotalPrice;
     private Button btnBuyNow;
     User user;
-    int totalPrice = 0;
+    static int totalPrice = 0;
     Context context;
+    public static List<Order> selectedOrderList;
+    public static ListOrderedProductAdapter listOrderedProductAdapter;
 
     public CartFragment() {
         // Required empty public constructor
@@ -90,7 +92,8 @@ public class CartFragment extends Fragment {
         //set recycler view
         totalPrice = 0;
         final List<Order> orderList = new ArrayList<>();
-        final ListOrderedProductAdapter listOrderedProductAdapter = new ListOrderedProductAdapter((MainActivity) getActivity(), orderList);
+        selectedOrderList = new ArrayList<>();
+        listOrderedProductAdapter = new ListOrderedProductAdapter((MainActivity) getActivity(), orderList);
         StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager(1,
                 StaggeredGridLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(staggeredGridLayoutManager);
@@ -100,20 +103,13 @@ public class CartFragment extends Fragment {
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                 final Order order = snapshot.getValue(Order.class);
-
-
                 if (order.getUserId().equals(user.getId()) && order.getStatus().equals("confirming")) {
-                    int orderedQuantity = order.getOrderedQuantity();
-                    int orderedPrice = order.getOrderedPrice();
-                    totalPrice += orderedPrice * orderedQuantity;
-                    txtTotalPrice.setText(String.format("%,d", totalPrice) + " VND ");
-
-                    for (Order indexOrder : orderList) {
-                        if (order.getProductId().equals(indexOrder.getProductId())) {
-                            order.setOrderedQuantity(order.getOrderedQuantity() + indexOrder.getOrderedQuantity());
-                            orderList.remove(indexOrder);
-                        }
-                    }
+//                    for (Order indexOrder : orderList) {
+//                        if (order.getProductId().equals(indexOrder.getProductId())) {
+//                            order.setOrderedQuantity(order.getOrderedQuantity() + indexOrder.getOrderedQuantity());
+//                            orderList.remove(indexOrder);
+//                        }
+//                    }
 
                     orderList.add(order);
                     listOrderedProductAdapter.notifyDataSetChanged();
@@ -139,6 +135,9 @@ public class CartFragment extends Fragment {
 
             }
         });
+
+        //set price
+        setTotalPrice();
 
         //Buy now
         btnBuyNow.setOnClickListener(new View.OnClickListener() {
@@ -183,8 +182,8 @@ public class CartFragment extends Fragment {
         //check money
         if (user.getMoney() >= totalPrice) {
             final DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
-            for (int i = 0; i < orderList.size(); i++) {
-                final Order indexOrder = orderList.get(i);
+            for (int i = 0; i < selectedOrderList.size(); i++) {
+                final Order indexOrder = selectedOrderList.get(i);
                 databaseReference.child("Order").child(indexOrder.getId()).child("orderedAddress").setValue(address);
                 databaseReference.child("Order").child(indexOrder.getId()).child("status").setValue(status);
                 //update seller's money
@@ -237,7 +236,7 @@ public class CartFragment extends Fragment {
     }
 
     void addSoldProduct(List<Order> orderList) {
-        for (Order order : orderList) {
+        for (Order order : selectedOrderList) {
             DatabaseReference data = FirebaseDatabase.getInstance().getReference("Product");
             final String idProduct = order.getProductId();
             final String idBuyer = order.getUserId();
@@ -261,9 +260,17 @@ public class CartFragment extends Fragment {
 
                 }
             });
-
-
         }
 
+    }
+
+    public static void setTotalPrice() {
+        totalPrice = 0;
+        for(Order indexOrder : selectedOrderList) {
+            int orderedQuantity = indexOrder.getOrderedQuantity();
+            int orderedPrice = indexOrder.getOrderedPrice();
+            totalPrice += orderedPrice * orderedQuantity;
+        }
+        txtTotalPrice.setText(String.format("%,d", totalPrice) + " VND ");
     }
 }
