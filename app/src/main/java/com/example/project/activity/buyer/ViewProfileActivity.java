@@ -129,7 +129,6 @@ public class ViewProfileActivity extends AppCompatActivity {
             }
         });
 
-
         //set value of logined to textview and editview
         if (!loginedUser.getImageUrl().equals("null")) {
             Glide.with(this).load(loginedUser.getImageUrl()).into(imageProfile);
