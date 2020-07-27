@@ -80,12 +80,6 @@ public class ProfileFragment extends Fragment {
                 loginedUser = snapshot.getValue(User.class);
                 textName.setText(loginedUser.getName());
                 textCash.setText(String.format("%,d", loginedUser.getMoney()) + " VND ");
-                //Set image
-                if (!loginedUser.getImageUrl().equals("null")) {
-                    Glide.with(view).load(loginedUser.getImageUrl()).into(imageProfile);
-                } else {
-                    Glide.with(view).load(R.drawable.profile_image).into(imageProfile);
-                }
             }
 
             @Override
@@ -93,6 +87,13 @@ public class ProfileFragment extends Fragment {
 
             }
         });
+        //Set image
+        if (!loginedUser.getImageUrl().equals("null")) {
+            Glide.with(view).load(loginedUser.getImageUrl()).into(imageProfile);
+        } else {
+            Glide.with(view).load(R.drawable.profile_image).into(imageProfile);
+        }
+
         //Cash
         btnCash.setOnClickListener(new View.OnClickListener() {
             @Override

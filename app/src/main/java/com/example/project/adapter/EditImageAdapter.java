@@ -23,7 +23,6 @@ public class EditImageAdapter extends RecyclerView.Adapter<EditImageAdapter.View
     public static boolean deletedMainImage = false;
 
     public EditImageAdapter(ArrayList<Bitmap> listImagesBitmap) {
-
         this.listImagesBitmap = listImagesBitmap;
     }
 
