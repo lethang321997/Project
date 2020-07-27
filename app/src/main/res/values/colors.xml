@@ -15,4 +15,6 @@
     <color name="colorDialog_button_clone2">#434444</color>
     <color name="colorButtonRed">#F62424</color>
     <color name="color_blue">#161FFF</color>
+    <color name="colorButtonLogout">#F43939</color>
+
 </resources>

@@ -5,6 +5,8 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -72,7 +74,7 @@ public class LoginActivity extends AppCompatActivity {
         final String email = editEmail.getText().toString();
         final String pass = editPass.getText().toString();
         if (email.isEmpty() || pass.isEmpty()) {
-            Toast.makeText(getApplicationContext(), "Incorrect email or password", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), "Please input email and password", Toast.LENGTH_LONG).show();
         } else {
             FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
             firebaseAuth.signInWithEmailAndPassword(email, pass).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {

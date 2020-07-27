@@ -75,6 +75,14 @@
     <string name="sold_product">Sold Product</string>
     <string name="my_products">My Products</string>
     <string name="selling_history">Selling History</string>
+    <string name="old_password">Old Password:</string>
+    <string name="new_password">New Password:</string>
+    <string name="re_new_password">Re-New Password:</string>
+    <string name="cancel">Cancel</string>
+    <string name="change_password">Change Password</string>
+    <string name="input_old_password">Input Old Password</string>
+    <string name="input_new_password">Input New Password</string>
+    <string name="input_re_new_password">Re-Input New Password</string>
     <string-array name="product_type">
         <item>Accessories</item>
         <item>Bag</item>
