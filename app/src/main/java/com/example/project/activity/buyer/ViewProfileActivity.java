@@ -102,15 +102,39 @@ public class ViewProfileActivity extends AppCompatActivity {
         //get logined User
         loginedUser = MainActivity.user;
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
-        databaseReference.child("User").equalTo(loginedUser.getId()).addChildEventListener(new ChildEventListener() {
+        databaseReference.child("User").orderByChild("id").equalTo(loginedUser.getId()).addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                 loginedUser = snapshot.getValue(User.class);
+                txtEmail.setText(loginedUser.getEmail());
+                txtViewUserName.setText(loginedUser.getName());
+                for (int i = 0; i < rdGender.getChildCount(); i++) {
+                    RadioButton radioButton = (RadioButton) rdGender.getChildAt(i);
+                    if (radioButton.getText().equals(loginedUser.getGender())) {
+                        radioButton.setChecked(true);
+                        break;
+                    }
+                }
+                txtDob.setText(loginedUser.getDob());
+                txtPhone.setText(loginedUser.getPhone());
+                txtLocation.setText(loginedUser.getAddress());
             }
 
             @Override
             public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                 loginedUser = snapshot.getValue(User.class);
+                txtEmail.setText(loginedUser.getEmail());
+                txtViewUserName.setText(loginedUser.getName());
+                for (int i = 0; i < rdGender.getChildCount(); i++) {
+                    RadioButton radioButton = (RadioButton) rdGender.getChildAt(i);
+                    if (radioButton.getText().equals(loginedUser.getGender())) {
+                        radioButton.setChecked(true);
+                        break;
+                    }
+                }
+                txtDob.setText(loginedUser.getDob());
+                txtPhone.setText(loginedUser.getPhone());
+                txtLocation.setText(loginedUser.getAddress());
             }
 
             @Override
@@ -128,7 +152,6 @@ public class ViewProfileActivity extends AppCompatActivity {
 
             }
         });
-
         //set value of logined to textview and editview
         if (!loginedUser.getImageUrl().equals("null")) {
             Glide.with(this).load(loginedUser.getImageUrl()).into(imageProfile);
@@ -136,18 +159,8 @@ public class ViewProfileActivity extends AppCompatActivity {
             Glide.with(this).load(R.drawable.profile_image).into(imageProfile);
         }
 
-        txtEmail.setText(loginedUser.getEmail());
-        txtViewUserName.setText(loginedUser.getName());
-        for (int i = 0; i < rdGender.getChildCount(); i++) {
-            RadioButton radioButton = (RadioButton) rdGender.getChildAt(i);
-            if (radioButton.getText().equals(loginedUser.getGender())) {
-                radioButton.setChecked(true);
-                break;
-            }
-        }
-        txtDob.setText(loginedUser.getDob());
-        txtPhone.setText(loginedUser.getPhone());
-        txtLocation.setText(loginedUser.getAddress());
+
+
 
         //catch event
         //Back
