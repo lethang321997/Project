@@ -78,7 +78,7 @@ public class ProfileFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         btnCash = view.findViewById(R.id.btnInsertCash);
         btn_manageSelling = view.findViewById(R.id.btnSellingHistory);
-        btnBuyingHistory = view.findViewById(R.id.btnOrderHistory);
+        btnBuyingHistory = view.findViewById(R.id.btnBuyingHistory);
         imageProfile = view.findViewById(R.id.imageProfile);
         textName = view.findViewById(R.id.txtName);
         textCash = view.findViewById(R.id.txtCash);
