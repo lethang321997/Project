@@ -9,19 +9,17 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:background="@color/colorText"
+        android:layout_height="35dp"
+        android:background="@color/tabSelected"
         tools:ignore="MissingConstraints">
 
-        <ImageView
+        <Button
             android:id="@+id/btnBack"
             android:layout_width="35dp"
-            android:layout_height="30dp"
-            android:layout_marginStart="5dp"
+            android:layout_height="35dp"
+            android:background="@drawable/abc_vector_test"
             android:clickable="true"
-            android:foreground="?android:attr/selectableItemBackground"
             android:scaleType="fitXY"
-            android:src="@drawable/ic_baseline_arrow_back"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -32,8 +30,10 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:text="@string/sold_product"
-            android:textColor="@color/color_blue"
-            android:textSize="22sp"
+            android:textAllCaps="true"
+            android:textColor="@color/colorBackgroundTabLayout"
+            android:textSize="14sp"
+            android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/btnBack"
             app:layout_constraintTop_toTopOf="parent" />

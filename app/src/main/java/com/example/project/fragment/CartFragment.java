@@ -100,12 +100,22 @@ public class CartFragment extends Fragment {
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                 final Order order = snapshot.getValue(Order.class);
+
+
                 if (order.getUserId().equals(user.getId()) && order.getStatus().equals("confirming")) {
-                    orderList.add(order);
                     int orderedQuantity = order.getOrderedQuantity();
                     int orderedPrice = order.getOrderedPrice();
                     totalPrice += orderedPrice * orderedQuantity;
                     txtTotalPrice.setText(String.format("%,d", totalPrice) + " VND ");
+
+                    for (Order indexOrder : orderList) {
+                        if (order.getProductId().equals(indexOrder.getProductId())) {
+                            order.setOrderedQuantity(order.getOrderedQuantity() + indexOrder.getOrderedQuantity());
+                            orderList.remove(indexOrder);
+                        }
+                    }
+
+                    orderList.add(order);
                     listOrderedProductAdapter.notifyDataSetChanged();
                 }
             }

@@ -43,6 +43,7 @@ public class ProfileFragment extends Fragment {
     }
 
     private Button btn_manageSelling;
+    private Button btnBuyingHistory;
     private Button btnCash;
     private ImageView imageProfile;
     private TextView textName;
@@ -64,6 +65,7 @@ public class ProfileFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         btnCash = view.findViewById(R.id.btnInsertCash);
         btn_manageSelling = view.findViewById(R.id.btnSellingHistory);
+        btnBuyingHistory = view.findViewById(R.id.btnBuyingHistory);
         imageProfile = view.findViewById(R.id.imageProfile);
         textName = view.findViewById(R.id.txtName);
         textCash = view.findViewById(R.id.txtCash);
@@ -95,11 +97,24 @@ public class ProfileFragment extends Fragment {
             }
         });
 
-        //Manage selling
+        //Selling history
         btn_manageSelling.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Fragment fragment = SellingManagerFragment.newInstance(loginedUser.getId());
+                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                transaction.replace(R.id.root_profile_fragment, fragment);
+                transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+                transaction.addToBackStack(null);
+                transaction.commit();
+            }
+        });
+
+        //Buying history
+        btnBuyingHistory.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Fragment fragment = BuyingHistoryFragment.newInstance(loginedUser.getId());
                 FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
                 transaction.replace(R.id.root_profile_fragment, fragment);
                 transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
