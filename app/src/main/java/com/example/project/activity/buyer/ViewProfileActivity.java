@@ -236,7 +236,9 @@ public class ViewProfileActivity extends AppCompatActivity {
     }
 
     public void updateUser() {
-        storeImage();
+        if (imageUri!=null) {
+            storeImage();
+        }
         DatabaseReference firebaseDatabase = FirebaseDatabase.getInstance().getReference();
         firebaseDatabase.child("User").child(loginedUser.getId()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
