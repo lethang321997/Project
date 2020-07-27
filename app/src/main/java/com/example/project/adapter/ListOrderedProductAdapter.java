@@ -10,11 +10,13 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.project.R;
+import com.example.project.fragment.CartFragment;
 import com.example.project.model.Order;
 import com.example.project.model.Product;
 import com.google.firebase.database.ChildEventListener;
@@ -31,7 +33,6 @@ public class ListOrderedProductAdapter extends RecyclerView.Adapter<ListOrderedP
     FragmentActivity fragmentActivity;
     List<Order> orderList;
     List<Product> checkedOrderedProductList = new ArrayList<>();
-    int totalPrice;
 
     public ListOrderedProductAdapter(FragmentActivity fragmentActivity, List<Order> orderList) {
         this.fragmentActivity = fragmentActivity;
@@ -92,6 +93,11 @@ public class ListOrderedProductAdapter extends RecyclerView.Adapter<ListOrderedP
                     @Override
                     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                         if (isChecked) {
+                            CartFragment.selectedOrderList.add(order);
+                            CartFragment.setTotalPrice();
+                        } else {
+                            CartFragment.selectedOrderList.remove(order);
+                            CartFragment.setTotalPrice();
                         }
                     }
                 });
