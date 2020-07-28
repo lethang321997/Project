@@ -173,7 +173,7 @@ public class CartFragment extends Fragment {
                         dialog.dismiss();
                         updateOrder(orderList, address, status);
                         reloadFragment();
-                        addSoldProduct(orderList);
+
                     }
                 });
 
@@ -191,6 +191,7 @@ public class CartFragment extends Fragment {
     public void updateOrder(List<Order> orderList, String address, String status) {
         //check money
         if (user.getMoney() >= totalPrice) {
+            addSoldProduct(orderList);
             final DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
             for (int i = 0; i < selectedOrderList.size(); i++) {
                 final Order indexOrder = selectedOrderList.get(i);
@@ -231,9 +232,9 @@ public class CartFragment extends Fragment {
             int userMoney = user.getMoney();
             int updatedMoney = userMoney - totalPrice;
             databaseReference.child("User").child(user.getId()).child("money").setValue(updatedMoney);
-            Toast.makeText(context, "Buy products successfully! Thank you!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "Buy products successfully! Thank you!", Toast.LENGTH_LONG).show();
         } else {
-            Toast.makeText(context, "You're not enough money to buy products", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "You're not enough money to buy products", Toast.LENGTH_LONG).show();
         }
     }
 

@@ -212,7 +212,7 @@ public class DetailProductActivity extends AppCompatActivity {
                                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task) {
-                                        Toast.makeText(v.getContext(), "Make order successfully", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(v.getContext(), "Make order successfully", Toast.LENGTH_LONG).show();
                                         finish();
                                     }
                                 });

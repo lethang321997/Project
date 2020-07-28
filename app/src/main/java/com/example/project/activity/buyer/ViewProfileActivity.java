@@ -156,7 +156,7 @@ public class ViewProfileActivity extends AppCompatActivity {
         if (!loginedUser.getImageUrl().equals("null")) {
             Glide.with(this).load(loginedUser.getImageUrl()).into(imageProfile);
         } else {
-            Glide.with(this).load(R.drawable.profile_image).into(imageProfile);
+            imageProfile.setImageResource(R.drawable.ic_profile_tab);
         }
 
 

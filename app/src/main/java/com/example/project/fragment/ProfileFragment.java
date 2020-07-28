@@ -110,7 +110,7 @@ public class ProfileFragment extends Fragment {
         if (!loginedUser.getImageUrl().equals("null")) {
             Glide.with(view).load(loginedUser.getImageUrl()).into(imageProfile);
         } else {
-            Glide.with(view).load(R.drawable.profile_image).into(imageProfile);
+            imageProfile.setImageResource(R.drawable.ic_profile_tab);
         }
 
         //Cash
