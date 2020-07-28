@@ -118,6 +118,12 @@ public class ViewProfileActivity extends AppCompatActivity {
                 txtDob.setText(loginedUser.getDob());
                 txtPhone.setText(loginedUser.getPhone());
                 txtLocation.setText(loginedUser.getAddress());
+                //set value of logined to textview and editview
+                if (!loginedUser.getImageUrl().equals("null")) {
+                    Glide.with(getApplicationContext()).load(loginedUser.getImageUrl()).into(imageProfile);
+                } else {
+                    imageProfile.setImageResource(R.drawable.ic_profile_tab);
+                }
             }
 
             @Override
@@ -135,6 +141,12 @@ public class ViewProfileActivity extends AppCompatActivity {
                 txtDob.setText(loginedUser.getDob());
                 txtPhone.setText(loginedUser.getPhone());
                 txtLocation.setText(loginedUser.getAddress());
+                //set value of logined to textview and editview
+                if (!loginedUser.getImageUrl().equals("null")) {
+                    Glide.with(getApplicationContext()).load(loginedUser.getImageUrl()).into(imageProfile);
+                } else {
+                    imageProfile.setImageResource(R.drawable.ic_profile_tab);
+                }
             }
 
             @Override
@@ -152,12 +164,6 @@ public class ViewProfileActivity extends AppCompatActivity {
 
             }
         });
-        //set value of logined to textview and editview
-        if (!loginedUser.getImageUrl().equals("null")) {
-            Glide.with(this).load(loginedUser.getImageUrl()).into(imageProfile);
-        } else {
-            imageProfile.setImageResource(R.drawable.ic_profile_tab);
-        }
 
 
 

@@ -78,18 +78,70 @@ public class DetailProductActivity extends AppCompatActivity {
 
         loginedUser = MainActivity.user;
 
+        final DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
+
         //init
         Intent intent = getIntent();
         selectedProduct = (Product) intent.getSerializableExtra("selectedProduct");
-        addImageToViewFlipper(selectedProduct.getImages());
 
-        txtProductName.setText(selectedProduct.getName());
-        //get username by userid
-        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
-        databaseReference.child("User").child(selectedProduct.getIdUser()).child("name").addValueEventListener(new ValueEventListener() {
+        //
+        final int[] productQuantityAvailable = new int[1];
+        databaseReference.child("Product").orderByChild("id").equalTo(selectedProduct.getId()).addChildEventListener(new ChildEventListener() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                txtUserName.setText(snapshot.getValue(String.class));
+            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                Product product = snapshot.getValue(Product.class);
+
+                selectedProduct.setQuantity(product.getQuantity());
+                addImageToViewFlipper(selectedProduct.getImages());
+                txtProductName.setText(selectedProduct.getName());
+                //get username by userid
+                databaseReference.child("User").child(selectedProduct.getIdUser()).child("name").addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        txtUserName.setText(snapshot.getValue(String.class));
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+                txtCurrentQuantity.setText(selectedProduct.getQuantity() == 0 ? "Not available" : "1");
+
+                //get availble product's quantity
+                productQuantityAvailable[0] = selectedProduct.getQuantity();
+                String statusProductQuantity;
+                if (productQuantityAvailable[0] == 0) {
+                    statusProductQuantity = "Not available";
+                    //disable button plus, minus and textview currentQuantity, btnAddToCart and btnBuyNow
+                    btnPlus.setVisibility(View.GONE);
+                    btnMinus.setVisibility(View.GONE);
+                    txtCurrentQuantity.setVisibility(View.GONE);
+                    btnAddCart.setVisibility(View.GONE);
+                    btnBuyNow.setVisibility(View.GONE);
+                } else {
+                    statusProductQuantity = productQuantityAvailable[0] + " products available";
+                }
+                txtProductQuantity.setText(statusProductQuantity);
+
+                txtColor.setText(selectedProduct.getColor());
+                txtBrand.setText(selectedProduct.getBrand());
+                txtProductPrice.setText(String.format("%,d", selectedProduct.getPrice()));
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
             }
 
             @Override
@@ -97,27 +149,8 @@ public class DetailProductActivity extends AppCompatActivity {
 
             }
         });
-        txtCurrentQuantity.setText(selectedProduct.getQuantity() == 0 ? "Not available" : "1");
 
-        //get availble product's quantity
-        final int productQuantityAvailable = selectedProduct.getQuantity();
-        String statusProductQuantity;
-        if (productQuantityAvailable == 0) {
-            statusProductQuantity = "Not available";
-            //disable button plus, minus and textview currentQuantity, btnAddToCart and btnBuyNow
-            btnPlus.setVisibility(View.GONE);
-            btnMinus.setVisibility(View.GONE);
-            txtCurrentQuantity.setVisibility(View.GONE);
-            btnAddCart.setVisibility(View.GONE);
-            btnBuyNow.setVisibility(View.GONE);
-        } else {
-            statusProductQuantity = productQuantityAvailable + " products available";
-        }
-        txtProductQuantity.setText(statusProductQuantity);
-        
-        txtColor.setText(selectedProduct.getColor());
-        txtBrand.setText(selectedProduct.getBrand());
-        txtProductPrice.setText(String.format("%,d", selectedProduct.getPrice()));
+
 
         //Back
         btnBack.setOnClickListener(new View.OnClickListener() {
@@ -132,7 +165,7 @@ public class DetailProductActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 int currentQuantity = Integer.parseInt(txtCurrentQuantity.getText().toString());
-                if (currentQuantity < productQuantityAvailable) {
+                if (currentQuantity < productQuantityAvailable[0]) {
                     currentQuantity += 1;
                     txtCurrentQuantity.setText(String.valueOf(currentQuantity));
                 }
