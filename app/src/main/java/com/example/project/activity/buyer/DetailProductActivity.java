@@ -209,7 +209,7 @@ public class DetailProductActivity extends AppCompatActivity {
         for (String imageUrl : imageUrlList) {
             imageList.add(new SlideModel(imageUrl, ScaleTypes.FIT));
         }
-        imageSlider.setImageList(imageList, ScaleTypes.FIT);
+        imageSlider.setImageList(imageList, ScaleTypes.CENTER_INSIDE);
     }
 
     public String getValueFromTextView(TextView textView) {
