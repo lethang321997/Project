@@ -31,6 +31,7 @@ import com.google.firebase.auth.EmailAuthCredential;
 import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -87,9 +88,9 @@ public class ProfileFragment extends Fragment {
         btnChangePassword = view.findViewById(R.id.btnChangePassword);
         //get logined user
         loginedUser = MainActivity.user;
-        databaseReference.child("User").child(loginedUser.getId()).addValueEventListener(new ValueEventListener() {
+        databaseReference.child("User").orderByChild("id").equalTo(loginedUser.getId()).addChildEventListener(new ChildEventListener() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
+            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                 loginedUser = snapshot.getValue(User.class);
                 textName.setText(loginedUser.getName());
                 textCash.setText(String.format("%,d", loginedUser.getMoney()) + " VND ");
@@ -102,16 +103,33 @@ public class ProfileFragment extends Fragment {
             }
 
             @Override
+            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                loginedUser = snapshot.getValue(User.class);
+                textName.setText(loginedUser.getName());
+                textCash.setText(String.format("%,d", loginedUser.getMoney()) + " VND ");
+                //Set image
+                if (!loginedUser.getImageUrl().equals("null")) {
+                    Glide.with(view).load(loginedUser.getImageUrl()).into(imageProfile);
+                } else {
+                    imageProfile.setImageResource(R.drawable.ic_profile_tab);
+                }
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
             public void onCancelled(@NonNull DatabaseError error) {
 
             }
         });
-        //Set image
-        if (!loginedUser.getImageUrl().equals("null")) {
-            Glide.with(view).load(loginedUser.getImageUrl()).into(imageProfile);
-        } else {
-            imageProfile.setImageResource(R.drawable.ic_profile_tab);
-        }
 
         //Cash
         btnCash.setOnClickListener(new View.OnClickListener() {
