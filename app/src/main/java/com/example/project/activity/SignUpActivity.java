@@ -317,7 +317,7 @@ public class SignUpActivity extends AppCompatActivity {
                                 int id = object.getInt("ID");
                                 String name = object.getString("Title");
                                 Commune commune = new Commune(id, name);
-                                if(!commune.getName().equals("Chưa rõ")){
+                                if (!commune.getName().equals("Chưa rõ")) {
                                     listCommune.add(commune);
                                 }
                             }
@@ -395,6 +395,7 @@ public class SignUpActivity extends AppCompatActivity {
                         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                         intent.putExtra(Constants.USER, user);
                         startActivity(intent);
+                        finish();
                     } else {
                         Toast.makeText(getApplicationContext(), "Email already exists", Toast.LENGTH_SHORT).show();
                     }
