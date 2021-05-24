@@ -73,6 +73,7 @@ public class ProfileFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_profile, container, false);
     }
 
+
     @Override
     public void onViewCreated(@NonNull final View view, @Nullable Bundle savedInstanceState) {
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();

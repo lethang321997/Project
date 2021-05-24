@@ -58,16 +58,12 @@ public class ViewProfileActivity extends AppCompatActivity {
     private Button btnChangeImage;
     private TextView txtEmail;
     private EditText txtViewUserName;
-    private RadioGroup rdGender;
-    private TextView txtDob;
     private EditText txtPhone;
     private EditText txtLocation;
     TextView takePhoto;
     TextView selectFromLibrary;
     Uri imageUri = null;
     User loginedUser;
-    Button btnGetDate;
-    DatePicker datePicker;
 
     RequestQueue mQueue;
     ArrayList<Province> listProvince = new ArrayList<>();
@@ -94,8 +90,6 @@ public class ViewProfileActivity extends AppCompatActivity {
         btnChangeImage = findViewById(R.id.btnChangeImage);
         txtEmail = findViewById(R.id.txtEmail);
         txtViewUserName = findViewById(R.id.txtViewUserName);
-        rdGender = findViewById(R.id.rdGender);
-        txtDob = findViewById(R.id.txtDOB);
         txtPhone = findViewById(R.id.txtPhone);
         txtLocation = findViewById(R.id.txtLocation);
 
@@ -108,14 +102,6 @@ public class ViewProfileActivity extends AppCompatActivity {
                 loginedUser = snapshot.getValue(User.class);
                 txtEmail.setText(loginedUser.getEmail());
                 txtViewUserName.setText(loginedUser.getName());
-                for (int i = 0; i < rdGender.getChildCount(); i++) {
-                    RadioButton radioButton = (RadioButton) rdGender.getChildAt(i);
-                    if (radioButton.getText().equals(loginedUser.getGender())) {
-                        radioButton.setChecked(true);
-                        break;
-                    }
-                }
-                txtDob.setText(loginedUser.getDob());
                 txtPhone.setText(loginedUser.getPhone());
                 txtLocation.setText(loginedUser.getAddress());
                 //set value of logined to textview and editview
@@ -131,14 +117,6 @@ public class ViewProfileActivity extends AppCompatActivity {
                 loginedUser = snapshot.getValue(User.class);
                 txtEmail.setText(loginedUser.getEmail());
                 txtViewUserName.setText(loginedUser.getName());
-                for (int i = 0; i < rdGender.getChildCount(); i++) {
-                    RadioButton radioButton = (RadioButton) rdGender.getChildAt(i);
-                    if (radioButton.getText().equals(loginedUser.getGender())) {
-                        radioButton.setChecked(true);
-                        break;
-                    }
-                }
-                txtDob.setText(loginedUser.getDob());
                 txtPhone.setText(loginedUser.getPhone());
                 txtLocation.setText(loginedUser.getAddress());
                 //set value of logined to textview and editview
@@ -193,13 +171,7 @@ public class ViewProfileActivity extends AppCompatActivity {
             }
         });
 
-        //Change dob
-        txtDob.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getDOB();
-            }
-        });
+
 
     }
 
@@ -263,8 +235,6 @@ public class ViewProfileActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 snapshot.getRef().child("name").setValue(txtViewUserName.getText().toString());
-                snapshot.getRef().child("gender").setValue(((RadioButton) findViewById(rdGender.getCheckedRadioButtonId())).getText().toString());
-                snapshot.getRef().child("dob").setValue(txtDob.getText().toString());
                 snapshot.getRef().child("phone").setValue(txtPhone.getText().toString());
                 snapshot.getRef().child("address").setValue(txtLocation.getText().toString());
                 closeActivity();
@@ -296,22 +266,6 @@ public class ViewProfileActivity extends AppCompatActivity {
         });
     }
 
-    void getDOB() {
-        final Dialog dialog = new Dialog(ViewProfileActivity.this);
-        dialog.setContentView(R.layout.dialog_date_picker);
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        dialog.show();
-        btnGetDate = dialog.findViewById(R.id.btnGetDate);
-        datePicker = dialog.findViewById(R.id.datePicker);
-        btnGetDate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String dob = datePicker.getDayOfMonth() + "/" + (datePicker.getMonth() + 1) + "/" + datePicker.getYear();
-                txtDob.setText(dob);
-                dialog.dismiss();
-            }
-        });
-    }
 
     public void closeActivity() {
         finish();

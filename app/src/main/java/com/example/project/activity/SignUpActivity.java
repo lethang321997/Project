@@ -60,7 +60,6 @@ public class SignUpActivity extends AppCompatActivity {
     EditText registerEmail;
     EditText registerPhone;
     EditText registerAddress;
-    EditText registerDOB;
     EditText registerPass;
     EditText registerRePass;
     CheckBox checkBoxTerm;
@@ -68,10 +67,6 @@ public class SignUpActivity extends AppCompatActivity {
     Spinner spinnerProvince;
     Spinner spinnerDistrict;
     Spinner spinnerCommune;
-    Button btnGetDate;
-    DatePicker datePicker;
-    RadioButton radioMale;
-    RadioButton radioFemale;
     RequestQueue mQueue;
     ArrayList<Province> listProvince = new ArrayList<>();
     ArrayList<District> listDistrict = new ArrayList<>();
@@ -99,9 +94,6 @@ public class SignUpActivity extends AppCompatActivity {
         registerAddress = findViewById(R.id.editAddress);
         registerPass = findViewById(R.id.registerPass);
         registerRePass = findViewById(R.id.registerRePass);
-        registerDOB = findViewById(R.id.registerDOB);
-        radioFemale = findViewById(R.id.radioFemale);
-        radioMale = findViewById(R.id.radioMale);
     }
 
 
@@ -148,12 +140,7 @@ public class SignUpActivity extends AppCompatActivity {
                 registerAccount();
             }
         });
-        registerDOB.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getDOB();
-            }
-        });
+
     }
 
     void initSpinner() {
@@ -223,7 +210,9 @@ public class SignUpActivity extends AppCompatActivity {
                         int id = object.getInt("ID");
                         String name = object.getString("Title");
                         Province province = new Province(id, name);
-                        listProvince.add(province);
+                        if (!province.getName().equals("Chưa rõ")) {
+                            listProvince.add(province);
+                        }
                     }
                     Collections.sort(listProvince, new Comparator<Province>() {
                         @Override
@@ -280,7 +269,9 @@ public class SignUpActivity extends AppCompatActivity {
                                 int id = object.getInt("ID");
                                 String name = object.getString("Title");
                                 District district = new District(id, name);
-                                listDistrict.add(district);
+                                if (!district.getName().equals("Chưa rõ")) {
+                                    listDistrict.add(district);
+                                }
                             }
                             Collections.sort(listDistrict, new Comparator<District>() {
                                 @Override
@@ -345,8 +336,6 @@ public class SignUpActivity extends AppCompatActivity {
         final String name = registerName.getText().toString();
         final String email = registerEmail.getText().toString();
         final String phone = registerPhone.getText().toString();
-        final String dob = registerDOB.getText().toString();
-        final String gender = (String) (radioMale.isChecked() ? radioMale.getText() : radioFemale.getText());
 
         final String address = registerAddress.getText().toString() + " - " + spinnerCommune.getSelectedItem().toString()
                 + " - " + spinnerDistrict.getSelectedItem().toString() + " - " + spinnerProvince.getSelectedItem().toString();
@@ -358,8 +347,6 @@ public class SignUpActivity extends AppCompatActivity {
             Toast.makeText(this, "Please input name", Toast.LENGTH_LONG).show();
         } else if (phone.isEmpty()) {
             Toast.makeText(this, "Please input phone number", Toast.LENGTH_LONG).show();
-        } else if (dob.isEmpty()) {
-            Toast.makeText(this, "Please input date of birth", Toast.LENGTH_LONG).show();
         } else if (spinnerProvince.getSelectedItemPosition() == 0) {
             Toast.makeText(this, "Please select province", Toast.LENGTH_LONG).show();
         } else if (spinnerDistrict.getSelectedItemPosition() == 0) {
@@ -390,7 +377,7 @@ public class SignUpActivity extends AppCompatActivity {
                         assert getUser != null;
                         String id = getUser.getUid();
                         DatabaseReference data = FirebaseDatabase.getInstance().getReference("User");
-                        User user = new User(id, name, email, phone, dob, gender, address, pass, 0, "null");
+                        User user = new User(id, name, email, phone, address, pass, 0, "null");
                         data.child(id).setValue(user);
                         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                         intent.putExtra(Constants.USER, user);
@@ -409,20 +396,5 @@ public class SignUpActivity extends AppCompatActivity {
         return !matcher.find();
     }
 
-    void getDOB() {
-        final Dialog dialog = new Dialog(SignUpActivity.this);
-        dialog.setContentView(R.layout.dialog_date_picker);
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        dialog.show();
-        btnGetDate = dialog.findViewById(R.id.btnGetDate);
-        datePicker = dialog.findViewById(R.id.datePicker);
-        btnGetDate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String dob = datePicker.getDayOfMonth() + "/" + (datePicker.getMonth() + 1) + "/" + datePicker.getYear();
-                registerDOB.setText(dob);
-                dialog.dismiss();
-            }
-        });
-    }
+
 }

@@ -11,15 +11,15 @@
     <string name="address">Address</string>
     <string name="input_name">Input Name</string>
     <string name="input_phone_number">Input Phone Number</string>
-    <string name="re_input_password">Re-Input Password</string>
+    <string name="re_input_password">Confirm Password</string>
     <string name="input_street_name">Input Street Name</string>
     <string name="i_accept_the_terms_of_service_and_privacy_policy">I accept the Terms of Service and Privacy Policy</string>
     <string name="text_sign_up">Sign Up!</string>
     <string name="InsertCash">Cash</string>
     <string name="Sell">Manage selling</string>
-    <string name="settingBriref">Setting profile</string>
-    <string name="orderHistory">Buying history</string>
-    <string name="changePassword">Change password</string>
+    <string name="settingBriref">Setting Profile</string>
+    <string name="orderHistory">Buying History</string>
+    <string name="changePassword">Change Password</string>
     <string name="insertCash">insertCash</string>
     <string name="manageSelling">manageSelling</string>
     <string name="settingProfile">settingProfile</string>
@@ -77,12 +77,12 @@
     <string name="selling_history">Selling History</string>
     <string name="old_password">Old Password:</string>
     <string name="new_password">New Password:</string>
-    <string name="re_new_password">Re-New Password:</string>
+    <string name="re_new_password">Confirm Password:</string>
     <string name="cancel">Cancel</string>
     <string name="change_password">Change Password</string>
     <string name="input_old_password">Input Old Password</string>
     <string name="input_new_password">Input New Password</string>
-    <string name="input_re_new_password">Re-Input New Password</string>
+    <string name="input_re_new_password">Confirm New Password</string>
     <string-array name="product_type">
         <item>Accessories</item>
         <item>Bag</item>

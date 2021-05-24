@@ -70,63 +70,30 @@
         app:layout_constraintStart_toEndOf="@+id/textView20"
         app:layout_constraintTop_toTopOf="@+id/guideline4" />
 
+
     <EditText
         android:id="@+id/txtLocation"
         android:layout_width="250dp"
         android:layout_height="50dp"
-        android:layout_marginTop="12dp"
+        android:layout_marginStart="4dp"
         android:background="@drawable/border_edit_text"
         android:gravity="center_vertical"
+
         android:textSize="18sp"
-
         app:layout_constraintStart_toEndOf="@+id/textView18"
-        app:layout_constraintTop_toBottomOf="@+id/txtPhone" />
-
-    <RadioGroup
-        android:id="@+id/rdGender"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintStart_toEndOf="@+id/textView17"
-        app:layout_constraintTop_toBottomOf="@+id/txtViewUserName"
-        android:layout_marginTop="15dp"
-        android:layout_marginLeft="3dp">
-
-        <RadioButton
-            android:id="@+id/radioButton2"
-            android:layout_width="wrap_content"
-            android:layout_height="38dp"
-            android:text="@string/male" />
-
-        <RadioButton
-            android:id="@+id/radioButton"
-            android:layout_width="wrap_content"
-            android:layout_height="38dp"
-            android:text="@string/female" />
-    </RadioGroup>
+        app:layout_constraintTop_toTopOf="@+id/textView18" />
 
     <EditText
         android:id="@+id/txtPhone"
         android:layout_width="250dp"
         android:layout_height="38dp"
-        android:layout_marginTop="15dp"
-        android:layout_marginLeft="3dp"
+        android:layout_marginStart="16dp"
         android:background="@drawable/border_edit_text"
         android:ems="10"
         android:hint="@string/phone"
         android:inputType="textPersonName"
         app:layout_constraintStart_toEndOf="@+id/textView19"
-        app:layout_constraintTop_toBottomOf="@+id/txtDOB" />
-
-    <TextView
-        android:id="@+id/textView22"
-        android:layout_width="38dp"
-        android:layout_height="38dp"
-        android:layout_marginLeft="50dp"
-        android:layout_marginTop="15dp"
-        android:background="@drawable/ic_cake_black_24dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView17" />
+        app:layout_constraintTop_toTopOf="@+id/textView19" />
 
     <TextView
         android:id="@+id/textView20"
@@ -139,24 +106,13 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/guideline4" />
 
-    <TextView
-        android:id="@+id/textView17"
-        android:layout_width="38dp"
-        android:layout_height="38dp"
-        android:layout_marginLeft="50dp"
-        android:layout_marginTop="15dp"
-        android:layout_marginRight="3dp"
-        android:background="@drawable/ic_sex"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView21" />
 
     <TextView
         android:id="@+id/textView18"
         android:layout_width="38dp"
         android:layout_height="38dp"
-        android:layout_marginLeft="50dp"
-        android:layout_marginTop="15dp"
-        android:layout_marginRight="3dp"
+        android:layout_marginStart="48dp"
+        android:layout_marginTop="52dp"
         android:background="@drawable/ic_location"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView19" />
@@ -165,35 +121,18 @@
         android:id="@+id/textView19"
         android:layout_width="38dp"
         android:layout_height="38dp"
-        android:layout_marginLeft="50dp"
-        android:layout_marginTop="15dp"
-        android:layout_marginRight="3dp"
+        android:layout_marginStart="48dp"
+        android:layout_marginTop="36dp"
         android:background="@drawable/ic_phone"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView22" />
-
-    <TextView
-        android:id="@+id/txtDOB"
-        android:layout_width="250dp"
-        android:layout_height="38dp"
-        android:layout_marginLeft="3dp"
-        android:layout_marginTop="15dp"
-        android:background="@drawable/border_edit_text"
-        android:ems="10"
-        android:gravity="center_vertical"
-        android:hint="@string/DOB"
-        android:inputType="textPersonName"
-        android:textSize="18sp"
-        app:layout_constraintStart_toEndOf="@+id/textView22"
-        app:layout_constraintTop_toBottomOf="@+id/rdGender" />
+        app:layout_constraintTop_toBottomOf="@+id/textView21" />
 
     <TextView
         android:id="@+id/textView21"
         android:layout_width="38dp"
         android:layout_height="38dp"
-        android:layout_marginLeft="50dp"
-        android:layout_marginTop="15dp"
-        android:layout_marginRight="3dp"
+        android:layout_marginStart="48dp"
+        android:layout_marginTop="40dp"
         android:background="@drawable/ic_person_black"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView20" />
@@ -202,14 +141,13 @@
         android:id="@+id/txtViewUserName"
         android:layout_width="250dp"
         android:layout_height="38dp"
-        android:layout_marginTop="15dp"
-        android:layout_marginLeft="3dp"
+        android:layout_marginStart="12dp"
         android:background="@drawable/border_edit_text"
         android:ems="10"
         android:hint="@string/Name"
         android:inputType="textPersonName"
         app:layout_constraintStart_toEndOf="@+id/textView21"
-        app:layout_constraintTop_toBottomOf="@+id/txtEmail" />
+        app:layout_constraintTop_toTopOf="@+id/textView21" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline4"
